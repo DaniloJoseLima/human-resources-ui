@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Auth from '@/views/public/login/Auth.vue'
 import AuthLogin from '@/views/public/login/AuthLogin.vue'
+import Restricted from '@/views/restricted/Restricted.vue'
+import Dashboard from '@/views/restricted/dashboard/Dashboard.vue'
 
 export const router = createRouter({
   routes: [
@@ -16,15 +18,31 @@ export const router = createRouter({
           meta: { public: true }
         },
       ]
+    },
+    {
+      path: '/user',
+      component: Restricted,
+      children: [
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: Dashboard,
+        },
+      ]
     }
   ],
   history: createWebHistory()
 })
 
 
-router.beforeEach(async (to, from) => {
-  
-
-  return true
-})
-
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('credentitals');
+  if (!to.meta.public && !loggedIn) {
+    next('/');
+  } else {
+    if(loggedIn && to.path === '/') {
+      next('/dashboard');
+    }
+    next();
+  }
+});

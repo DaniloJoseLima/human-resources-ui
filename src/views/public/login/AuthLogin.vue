@@ -22,14 +22,40 @@
 
 <script setup>
 import { Form } from 'vee-validate'
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
+import  useToastNotify  from '@/hooks/toast'
 
 import { useLogin } from '@/composables'
 
 import BaseInput from '@/components/BaseInput.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
+
+const store = useStore();
+const router = useRouter()
+const { notify } = useToastNotify()
+
 const {
   loginForm
 } = useLogin()
+
+
+
+
+async function onSubmit(values) {
+
+  store.dispatch('auth/login', values).then(() => {
+    router.push('dashboard')
+  },
+    async (error) => {
+      const msg = {
+        'account not exist': 'Usuário não encontrado',
+        'invalid password': 'Senha inválida',
+      }[error.response.data.message || 'Erro ao realizar login']
+      notify('DANGER',  msg)
+    }
+  );
+}
 
 </script>
