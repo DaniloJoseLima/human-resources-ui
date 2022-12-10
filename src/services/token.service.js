@@ -9,20 +9,19 @@ class TokenService {
 
   getLocalAccessToken() {
     const credentitals = JSON.parse(localStorage.getItem("credentitals"));
-    return credentitals?.accessToken;
+    return credentitals?.token;
   }
 
   updateLocalAccessToken(token) {
     let credentitals = JSON.parse(localStorage.getItem("credentitals"));
-    credentitals.accessToken = token;
+    credentitals.token = token;
     localStorage.setItem("credentitals", JSON.stringify(credentitals));
   }
 
   getUser() {
     const credentitals = JSON.parse(localStorage.getItem("credentitals"));
-    if (credentitals?.accessToken) {      
-      const sub = jwt_decode(credentitals?.accessToken).sub;  
-      const user = JSON.parse(sub);    
+    if (credentitals?.user) {       
+      const user = credentitals.user;    
       return user;
     }
     return null

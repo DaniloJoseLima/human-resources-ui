@@ -1,5 +1,5 @@
 <template>
-  Acessou 
+  Lista 
 </template>
 
 <script setup>

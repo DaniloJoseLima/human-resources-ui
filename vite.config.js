@@ -1,14 +1,21 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+
+import Vue from '@vitejs/plugin-vue'
+import ViteSVGIcons from 'vite-plugin-svg-icons'
 
 import path from 'path'
 
-// https://vitejs.dev/config/
-export default defineConfig({  
+export default defineConfig({
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`
     }
   },
-  plugins: [vue()]
+  plugins: [
+    Vue({ refTransform: true }),
+    ViteSVGIcons({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/gallery/icons')],
+      symbolId: '[name]'
+    })
+  ]
 })

@@ -17,23 +17,11 @@ const setup = (store) => {
     },
     async (error) => { 
       const originalConfig = error.config;
-      if (originalConfig.url !== "/auth" && error.response) {
-        if (error.response.status === 401 && !originalConfig._retry) {
-          originalConfig._retry = true;  
-          try {
-            const refreshToken =  TokenService.getLocalRefreshToken()                                
-            const rs = await axiosInstance.post('/auth/refresh-token', { refreshToken })
-            const { accessToken } = rs.data;
-
-            store.dispatch('auth/refresh-token', accessToken)
-            TokenService.updateLocalAccessToken(accessToken)
-
-            return axiosInstance(originalConfig)
-          } catch (_error) {                        
-            store.dispatch('auth/logout')
-            window.location = '#/'             
-            return Promise.reject(_error);
-          }
+      if (originalConfig.url !== "/login" && error.response) {
+        if (error.response.status === 401 && !originalConfig._retry) {         
+          store.dispatch('auth/logout')
+          window.location = '#/'             
+          return Promise.reject(error);
         }
       }
 

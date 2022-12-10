@@ -12,10 +12,7 @@ export const auth =  {
   namespaced: true,
   state: initialState,
   getters: {
-    currentUser (state) {       
-      if (!state.user){        
-         state.user =  TokenService.getUser()
-      }
+    currentUser (state) {
       return state.user;
     },
     loggedIn (state) {  
@@ -27,23 +24,14 @@ export const auth =  {
   },
   mutations: {
     LOGIN_SUCCESS (state, credentitals) {
-      state.status.loggedIn = true;
       state.credentitals = credentitals;      
     },
     LOGIN_FAILURE (state) {
-      state.status.loggedIn = false;
       state.credentitals = null;
-      state.user = null;
     },
     LOGOUT (state) {
-      state.status.loggedIn = false;
       state.credentitals = null;
-      state.user = null;
-    },   
-    REFRESH_TOKEN (state, accessToken) {
-      state.status.loggedIn = true;
-      state.credentitals = { ...state.credentitals.accessToken, accessToken: accessToken };
-    },
+    }
   },
   actions: {
     login ({ commit }, credentitals) {
@@ -67,9 +55,6 @@ export const auth =  {
         TokenService.removeCredentials()
         commit("LOGOUT");
       }
-    },   
-    refreshToken ({ commit }, accessToken) {
-      commit("REFRESH_TOKEN", accessToken);
     }
   },
 };

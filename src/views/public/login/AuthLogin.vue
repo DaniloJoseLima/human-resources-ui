@@ -40,14 +40,12 @@ const {
   loginForm
 } = useLogin()
 
-
-
-
 async function onSubmit(values) {
 
-  store.dispatch('auth/login', values).then(() => {
-    router.push('dashboard')
-  },
+  store.dispatch('auth/login', values).then(
+    () => {
+      router.push('dashboard')
+    },
     async (error) => {
       const msg = {
         'account not exist': 'Usuário não encontrado',
