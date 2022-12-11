@@ -4,7 +4,7 @@ import TokenService from './token.service';
 class AuthService {
 
   login({ email, password }) {
-    return api.post("/login", { email, password }).then((response) => {
+    return api.post("/auth/login", { email, password }).then((response) => {
        if (response.data.token) {
         TokenService.setCredentials(response.data);
       }
@@ -12,6 +12,7 @@ class AuthService {
     });
   }
 
+  //IMPLEMENTAR
   logout(userId) {
     return api.post("/auth/logout",{ userId }).then((response) => {
       TokenService.removeCredentials();

@@ -77,6 +77,7 @@ import useToastNotify from '@/hooks/toast'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 
+import refDataService from '../../../services/refData.service'
 import userService from '../../../services/user.service';
 import externalApi from '../../../services/externalApi.service';
 
@@ -85,21 +86,12 @@ const { notify } = useToastNotify();
 let formValues = ref({})
 
 const validations = yup.object({
-
 });
 
-const gender = [
-  { id: 1, title: 'Masculino' },
-  { id: 2, title: 'Feminino' },
-  { id: 3, title: 'Outro' },
-  { id: 4, title: 'Prefiro não dizer' },
-]
-const maritalStatus = [
-  { id: 1, title: 'Solteiro (a)' },
-  { id: 2, title: 'Casado (a)' },
-  { id: 3, title: 'Divorciado (a)' },
-  { id: 4, title: 'Viúvo (a)' },
-]
+let ethnicity = ref([]);
+let maritalStatus = ref([]);
+let gender = ref([]);
+let documents = ref([]);
 
 const ufExp = [
   { id: 1, title: 'SP' },
@@ -107,13 +99,6 @@ const ufExp = [
   { id: 3, title: 'MG' },
 ]
 
-const ethnicity = [
-  { id: 1, title: 'Brancos ' },
-  { id: 2, title: 'Pardos  ' },
-  { id: 3, title: 'Pretos  ' },
-  { id: 4, title: 'Amarelos  ' },
-  { id: 5, title: 'Indígenas  ' },
-]
 
 const education = [
   { id: 1, title :'Médio Completo' },
@@ -129,8 +114,11 @@ const education = [
 
 
 onMounted(async () => {
-  const data = await userService.getUser();
-  console.log(data)
+  ethnicity.value = await refDataService.getEthnicityTypes()
+  maritalStatus.value = await refDataService.getMaritalStatusTypes()
+  gender.value = await refDataService.getGenderTypes()
+  documents.value = await refDataService.getDocumentsTypes()
+  console.log(documents.value)
 })
 
 async function searchCep(cep) {
