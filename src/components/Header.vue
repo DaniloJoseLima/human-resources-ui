@@ -61,9 +61,6 @@ import { computed } from 'vue';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/solid'
 
-import BaseIcons from '@/components/BaseIcons.vue'
-
-
 const store = useStore()
 const { notify } = useToastNotify();
 const router = useRouter()

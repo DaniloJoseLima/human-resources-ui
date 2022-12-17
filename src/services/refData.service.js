@@ -25,6 +25,24 @@ class RefDataService {
       return result.data
     });
   }
+  
+  getSchoolingTypes() {
+    return api.get(`/ref-data/schooling-types`).then(result => {
+      return result.data
+    });
+  }
+  
+  getContactTypes() {
+    return api.get(`/ref-data/contact-types`).then(result => {
+      return result.data
+    });
+  }
+  
+  getDependentTypes() {
+    return api.get(`/ref-data/dependent-types`).then(result => {
+      return result.data
+    });
+  }
 }
 
 export default new RefDataService();

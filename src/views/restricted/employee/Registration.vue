@@ -1,44 +1,62 @@
 <template>
   <h1 class="text-primary-500 text-xl font-bold uppercase">Cadastro</h1>
-  <Form v-slot="{ values, meta }" @submit="onSubmit" :initial-values="formValues" :validation-schema="validations"
-    class="space-y-4">
+  <Form v-slot="{ values, isSubmitting }" @submit="onSubmit" :initial-values="collaboratorFormValues"
+    :validation-schema="collaboratorForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dados pessoais</h2>
       <div class="grid grid-cols-4 gap-4">
         <BaseInput class="col-span-3" name="name" type="text" label="Nome" />
         <BaseInput name="birth" type="text" v-maska="'##/##/####'" label="Data de nascimento" />
-        <BaseInput name="rg" type="text" label="RG" />
-        <BaseInput name="dateExp" type="text" v-maska="'##/##/####'" label="Data expedição" />
-        <BaseSelect nameModel="ufExp" :listItens="ufExp" label="UF expedição" />
-        <BaseInput name="orgExp" type="text" label="Orgão expedição" />
-        <BaseInput name="cpf" type="text" v-maska="'###.###.###-##'" label="CPF" />
         <BaseSelect nameModel="gender" :listItens="gender" label="Genero" />
         <BaseSelect nameModel="maritalStatus" :listItens="maritalStatus" label="Estado civil" />
-      </div>
-      <div class="grid grid-cols-4 gap-4">
-        <BaseInput name="pis" type="text" label="Número do PIS" />
-        <BaseInput name="pisDate" type="text" v-maska="'##/##/####'" label="Date de emissão do PIS" />
+        <BaseSelect nameModel="ethnicity" :listItens="ethnicity" label="Etnia" />
+        <BaseInput name="nationality" type="text" label="Nacionalidade" />
+        <BaseInput name="naturalness" type="text" label="Naturalidade" />
+        <BaseSelect nameModel="schoolingType" :listItens="schoolingTypes" label="Escolaridade" />
       </div>
       <div class="grid grid-cols-2 gap-4">
         <BaseInput name="nameMother" type="text" label="Nome da mãe" />
         <BaseInput name="nameFather" type="text" label="Nome do pai" />
       </div>
-      <div class="grid grid-cols-3 gap-4">
-        <BaseSelect nameModel="ethnicity" :listItens="ethnicity" label="Etnia" />
-        <BaseInput name="nationality" type="text" label="Nacionalidade" />
-        <BaseInput name="naturalness" type="text" label="Naturalidade" />
-      </div>
-      <div class="grid grid-cols-5 gap-4">
-        <BaseSelect nameModel="education" :listItens="education" label="Escolaridade" />
-      </div>
+    </div>
+    <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
+      <h2 class="text-primary-500 text-lg font-bold">Documentos</h2>
+      <FieldArray name="document" v-slot="{ fields, push, remove }">
+        <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
+          <div class="relative grid grid-cols-10 gap-4 pr-6">
+            <BaseSelect :nameModel="`document[${idx}].type`" :listItens="documentsType" label="Tipo" />
+            <BaseInput v-if="field.value && field.value.type && field.value.type.id == 2" class="col-span-3"
+              :name="`document[${idx}].number`" type="text" label="Número documento" v-maska="'###.###.###-##'" />
+            <BaseInput v-else class="col-span-3" :name="`document[${idx}].number`" type="text"
+              label="Número documento" />
+            <BaseInput class="col-span-2" :name="`document[${idx}].expeditionDate`" type="text" label="Data expedição"
+              v-maska="'##/##/####'" />
+            <BaseInput class="col-span-2" :name="`document[${idx}].expeditionUf`" type="text" label="UF expedição" />
+            <BaseInput class="col-span-2" :name="`document[${idx}].expeditionAgency`" type="text"
+              label="Orgão expedidor" />
+            <button class="absolute right-0 top-2.5 col-span-1 text-negative-400 font-bold hover:opacity-70"
+              type="button" @click="remove(idx)">X</button>
+          </div>
+        </fieldset>
+        <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
+          @click="push()">Adicionar novo documento</a>
+      </FieldArray>
     </div>
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Contatos</h2>
-      <div class="grid grid-cols-4 gap-4">
-        <BaseInput name="phoneNumber" v-maska="'(##) ####-####'" type="text" label="Telefone residencial" />
-        <BaseInput name="cellNumber" v-maska="'(##) #####-####'" type="text" label="Celular" />
-        <BaseInput name="commercialNumber" v-maska="['(##) ####-####', '(##) #####-####']" type="text" label="Telefone comercial" />        
-      </div>
+      <FieldArray name="contact" v-slot="{ fields, push, remove }">
+        <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
+          <div class="relative grid grid-cols-10 gap-4 pr-6">
+            <BaseSelect :nameModel="`contact[${idx}].type`" :listItens="contactTypes" label="Tipo" />
+            <BaseInput class="col-span-3" :name="`contact[${idx}].phoneNumber`" type="text" label="Número"
+              v-maska="['(##) ####-####', '(##) #####-####']" />
+            <button class="inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
+              @click="remove(idx)">X</button>
+          </div>
+        </fieldset>
+        <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
+          @click="push()">Adicionar novo contato</a>
+      </FieldArray>
     </div>
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Endereço</h2>
@@ -58,82 +76,77 @@
     </div>
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dependentes</h2>
-      <div class="grid grid-cols-4 gap-4">
-        
-      </div>
-      <div class="grid grid-cols-4 gap-4">
-
-      </div>
+      <FieldArray name="dependent" v-slot="{ fields, push, remove }">
+        <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
+          <div class="relative grid grid-cols-10 gap-4 pr-6">
+            <BaseSelect :nameModel="`dependent[${idx}].type`" :listItens="dependentTypes" label="Tipo" />
+            <BaseInput class="col-span-3" :name="`dependent[${idx}].name`" type="text" label="Nome" />
+            <BaseInput class="col-span-3" :name="`dependent[${idx}].birthDate`" type="text" label="Data de nascimento"
+              v-maska="'##/##/####'" />
+            <button class="inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
+              @click="remove(idx)">X</button>
+          </div>
+        </fieldset>
+        <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
+          @click="push()">Adicionar novo contato</a>
+      </FieldArray>
     </div>
+    <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>
   </Form>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Form } from 'vee-validate'
-import * as yup from 'yup'
+import { Form, FieldArray } from 'vee-validate'
 import useToastNotify from '@/hooks/toast'
 
 import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
+import BaseButton from '@/components/BaseButton.vue'
+
+import { useRegistration } from '@/composables'
 
 import refDataService from '../../../services/refData.service'
 import userService from '../../../services/user.service';
 import externalApi from '../../../services/externalApi.service';
 
 const { notify } = useToastNotify();
+const {
+  collaboratorForm
+} = useRegistration()
 
-let formValues = ref({})
-
-const validations = yup.object({
-});
-
+let collaboratorFormValues = ref({})
 let ethnicity = ref([]);
 let maritalStatus = ref([]);
 let gender = ref([]);
-let documents = ref([]);
-
-const ufExp = [
-  { id: 1, title: 'SP' },
-  { id: 2, title: 'RJ' },
-  { id: 3, title: 'MG' },
-]
-
-
-const education = [
-  { id: 1, title :'Médio Completo' },
-  { id: 1, title :'Superior Incompleto' },
-  { id: 1, title :'Superior Completo' },
-  { id: 1, title :'Pós-graduação Incompleto' },
-  { id: 1, title :'Pós-graduação Completo' },
-  { id: 1, title :'Mestrado Incompleto' },
-  { id: 1, title :'Mestrado Completo' },
-  { id: 1, title :'Doutorado Incompleto' },
-  { id: 1, title :'Doutorado Completo' },
-]
-
+let documentsType = ref([]);
+let schoolingTypes = ref([]);
+let contactTypes = ref([]);
+let dependentTypes = ref([]);
 
 onMounted(async () => {
   ethnicity.value = await refDataService.getEthnicityTypes()
   maritalStatus.value = await refDataService.getMaritalStatusTypes()
   gender.value = await refDataService.getGenderTypes()
-  documents.value = await refDataService.getDocumentsTypes()
-  console.log(documents.value)
+  documentsType.value = await refDataService.getDocumentsTypes()
+  schoolingTypes.value = await refDataService.getSchoolingTypes()
+  contactTypes.value = await refDataService.getContactTypes()
+  dependentTypes.value = await refDataService.getDependentTypes()
 })
 
 async function searchCep(cep) {
   if (cep && cep.length === 9) {
     const data = await externalApi.cep(cep);
-    console.log(data)
     if (data.erro) {
       notify('DANGER', "CEP inválido")
-      formValues.value.address = {}
+      collaboratorFormValues.value = {}
     } else {
-      formValues.value.address = {}
-      formValues.value.address.district = data.bairro
-      formValues.value.address.place = data.logradouro
-      formValues.value.address.state = data.uf
-      formValues.value.address.city = data.localidade
+      collaboratorFormValues.value.address = {
+        district: data.bairro,
+        place: data.logradouro,
+        state: data.uf,
+        city: data.localidade,
+      }
     }
   }
 }

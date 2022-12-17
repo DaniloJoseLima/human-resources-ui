@@ -1,11 +1,14 @@
 <template>
-  <button class="flex items-center justify-center w-full h-14 font-bold rounded-md transition-colors duration-200 disabled:cursor-not-allowed" :class="getStyles()" :disabled="disabled" @click="onClick">
-    <!-- <BaseIcon v-if="loading" name="spin" class="animate-spin w-6" /> -->
-      <slot />
-  </button>    
+  <button
+    class="flex items-center justify-center w-full h-14 font-bold rounded-md transition-colors duration-200 disabled:cursor-not-allowed"
+    :class="getStyles()" :disabled="disabled" @click="onClick">
+    <BaseIcons v-if="loading" name="spin" class="animate-spin w-6" />
+    <slot />
+  </button>
 </template>
 
 <script setup>
+import BaseIcons from '@/components/BaseIcons.vue'
 
 const props = defineProps({
   loading: {
@@ -24,14 +27,14 @@ const props = defineProps({
 
 const emits = defineEmits(['click'])
 
-function getStyles () {
+function getStyles() {
   const style = props.outline ? 'outline' : 'default'
 
   if (props.disabled === true) {
     return {
       outline: ['text-neutral-400', 'border', 'border-neutral-400', 'bg-transparent', 'hover:bg-transparent', 'active:bg-transparent'],
       default: ['text-neutral-400', 'bg-neutral-500', 'hover:bg-neutral-500', 'active:bg-neutral-500']
-    }[style]       
+    }[style]
   }
 
   return {
@@ -40,7 +43,7 @@ function getStyles () {
   }[style]
 }
 
-function onClick (ev) {
+function onClick(ev) {
   if (props.loading || props.disabled) {
     ev.preventDefault()
     return
