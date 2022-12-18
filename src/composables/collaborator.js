@@ -6,6 +6,7 @@ import { cnpj, cpf } from 'cpf-cnpj-validator'
 dayjs.extend(customParseFormat)
 
 const CPF_ID = 2
+const CNPJ_ID = 6
 
 export function useRegistration() {
 
@@ -38,6 +39,15 @@ export function useRegistration() {
               }
               return true
             }
+          )
+          .test('cnpj-validation', 'Digite um número de CNPJ válido',
+            (value, ref) => {
+              const { type } = ref.parent
+              if (value && type && type.id == CNPJ_ID) {
+                return cnpj.isValid(value)
+              }
+              return true
+            }
           ),
         expeditionDate: yup.string().test('invalidDate', 'Data inválida.', function (value) {
           if (!value) {
@@ -57,16 +67,16 @@ export function useRegistration() {
     ).strict(),
     address: yup.object().shape({
       zipCode: yup.string().required('Campo obrigatório').length(9, 'CEP inválido.')
-      .test(
-        'cep-validation', 'Digite CEP válido',
-        (value, ref) => {
-          const { place } = ref.parent
-          if (value && !place) {
-            return false
+        .test(
+          'cep-validation', 'Digite CEP válido',
+          (value, ref) => {
+            const { place } = ref.parent
+            if (value && !place) {
+              return false
+            }
+            return true
           }
-          return true
-        }
-      ),
+        ),
       number: yup.string().required('Campo obrigatório'),
       place: yup.string(),
       complement: yup.string().min(3, 'Digite um complemento mais específico'),
@@ -74,8 +84,14 @@ export function useRegistration() {
       state: yup.string(),
       city: yup.string(),
     }),
-    dependent: yup.array().of(
-      yup.object().shape({
+    dependent: yup.array()
+      .test(
+        'dependent', '',
+        (value) => {
+          return !value ? true : false
+        }
+      )
+      .of(yup.object().shape({
         type: yup.object().required('Campo obrigatório'),
         name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres.'),
         birthDate: yup.string().required('Campo obrigatório').test('invalidDate', 'Data inválida.', function (value) {
@@ -85,7 +101,7 @@ export function useRegistration() {
           return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
         }),
       })
-    ).strict(),
+      ).strict(),
   })
 
   return {

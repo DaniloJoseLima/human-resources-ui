@@ -42,7 +42,7 @@
         </div>
         <div>
           <div class="flex items-center">
-            <p class="font-normal text-neutral-500">Maria Laura</p>
+            <p class="font-normal text-neutral-500">{{ loggedInUser.name }}</p>
           </div>
           <div class="flex items-center">
             <a class="font-normal text-sm text-neutral-200 underline cursor-pointer" @click="logout">Sair</a>

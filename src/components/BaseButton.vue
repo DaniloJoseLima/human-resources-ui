@@ -3,7 +3,9 @@
     class="flex items-center justify-center w-full h-14 font-bold rounded-md transition-colors duration-200 disabled:cursor-not-allowed"
     :class="getStyles()" :disabled="disabled" @click="onClick">
     <BaseIcons v-if="loading" name="spin" class="animate-spin w-6" />
-    <slot />
+    <template v-else>
+      <slot />
+    </template>
   </button>
 </template>
 

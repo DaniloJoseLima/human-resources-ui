@@ -25,8 +25,8 @@
         <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
           <div class="relative grid grid-cols-10 gap-4 pr-6">
             <BaseSelect :nameModel="`document[${idx}].type`" :listItens="documentsType" label="Tipo" />
-            <BaseInput v-if="field.value && field.value.type && field.value.type.id == 2" class="col-span-3"
-              :name="`document[${idx}].number`" type="text" label="Número documento" v-maska="'###.###.###-##'" />
+            <BaseInput v-if="field.value && field.value.type && (field.value.type.id == 2 || field.value.type.id == 6)" class="col-span-3"
+              :name="`document[${idx}].number`" type="text" label="Número documento" v-maska="['###.###.###-##', '##.###.###/####-##']" />
             <BaseInput v-else class="col-span-3" :name="`document[${idx}].number`" type="text"
               label="Número documento" />
             <BaseInput class="col-span-2" :name="`document[${idx}].expeditionDate`" type="text" label="Data expedição"
@@ -35,7 +35,7 @@
             <BaseInput class="col-span-2" :name="`document[${idx}].expeditionAgency`" type="text"
               label="Orgão expedidor" />
             <button class="absolute right-0 top-2.5 col-span-1 text-negative-400 font-bold hover:opacity-70"
-              type="button" @click="remove(idx)">X</button>
+              type="button" @click="remove(idx)" v-if="idx > 0">X</button>
           </div>
         </fieldset>
         <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
@@ -51,7 +51,7 @@
             <BaseInput class="col-span-3" :name="`contact[${idx}].phoneNumber`" type="text" label="Número"
               v-maska="['(##) ####-####', '(##) #####-####']" />
             <button class="inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
-              @click="remove(idx)">X</button>
+              @click="remove(idx)" v-if="idx > 0">X</button>
           </div>
         </fieldset>
         <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
@@ -61,8 +61,8 @@
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Endereço</h2>
       <div class="grid grid-cols-4 gap-4">
-        <BaseInput name="address.zipCode" type="text" v-maska="'#####-###'" label="CEP"
-          @change="searchCep(values.address.zipCode)" @focus="values.address = {}" />
+        <BaseInput name="address.zipCode" type="text" v-maska="'#####-###'" label="CEP" @change="searchCep(values)"
+          @focus="values.address = {}" />
       </div>
       <div class="grid grid-cols-4 gap-4">
         <BaseInput class="col-span-3" name="address.place" type="text" label="Logradouro" disabled />
@@ -107,7 +107,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import { useRegistration } from '@/composables'
 
 import refDataService from '../../../services/refData.service'
-import userService from '../../../services/user.service';
+import collaboratorService from '../../../services/collaborator.service';
 import externalApi from '../../../services/externalApi.service';
 
 const { notify } = useToastNotify();
@@ -115,7 +115,10 @@ const {
   collaboratorForm
 } = useRegistration()
 
-let collaboratorFormValues = ref({})
+let collaboratorFormValues = ref({ 
+  document: [ { "type": { "id": "2", "name": "CPF" } } ],
+  contact: [ { "type": { "id": "2", "name": "Celular" } } ]
+})
 let ethnicity = ref([]);
 let maritalStatus = ref([]);
 let gender = ref([]);
@@ -134,20 +137,32 @@ onMounted(async () => {
   dependentTypes.value = await refDataService.getDependentTypes()
 })
 
-async function searchCep(cep) {
-  if (cep && cep.length === 9) {
-    const data = await externalApi.cep(cep);
+async function searchCep(obj) {
+  if (obj.address.zipCode && obj.address.zipCode.length === 9) {
+    const data = await externalApi.cep(obj.address.zipCode);
     if (data.erro) {
       notify('DANGER', "CEP inválido")
-      collaboratorFormValues.value = {}
+      collaboratorFormValues.value = {
+        ...obj,
+        address: {}
+      }
     } else {
-      collaboratorFormValues.value.address = {
-        district: data.bairro,
-        place: data.logradouro,
-        state: data.uf,
-        city: data.localidade,
+      collaboratorFormValues.value = {
+        ...obj,
+        address: {
+          district: data.bairro,
+          place: data.logradouro,
+          state: data.uf,
+          city: data.localidade,
+        }
       }
     }
   }
+}
+
+async function onSubmit(values) {
+  const data = await collaboratorService.create(values)
+  console.log(data)
+  console.log(values)
 }
 </script>

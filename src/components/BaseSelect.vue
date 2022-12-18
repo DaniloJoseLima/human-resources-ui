@@ -2,7 +2,7 @@
   <div>
     <Listbox v-model="objRef">
       <div class="relative w-full">
-        <ListboxButton class="relative text-left border border-primary-500 rounded-md w-full h-11 p-2 text-primary-500"
+        <ListboxButton class="relative text-left border border-primary-500 rounded-md w-full h-11 p-2 text-primary-500 focus-visible:ring-primary-500 !outline-0 focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary-500"
           :class="{ 'border-negative-300' : errorMessage }">
           <label v-show="props.label"
             class="absolute text-primary-500 transform-gpu transition-all duration-200 select-none pointer-events-none top-2"
