@@ -1,4 +1,4 @@
-<template>
+<template v-if="loggedInUser">
   <header class="bg-white border-b-2 border-neutral-50">
     <div class="flex justify-center md:justify-between items-center container h-[86px]">
       <router-link :to="{ name: 'dashboard' }">
@@ -27,9 +27,6 @@
               <router-link @click="close()" :to="{ name: 'list' }" class="text-primary-500 hover:text-primary-400" active-class="font-bold">
                 Listar
               </router-link>
-              <router-link @click="close()" :to="{ name: 'registration' }" class="text-primary-500 hover:text-primary-400" active-class="font-bold">
-                Cadastrar
-              </router-link>
             </div>
           </PopoverPanel>
         </Popover>
@@ -42,7 +39,7 @@
         </div>
         <div>
           <div class="flex items-center">
-            <p class="font-normal text-neutral-500">{{ loggedInUser.name }}</p>
+            <p class="font-normal text-neutral-500">{{ loggedInUser?.name }}</p>
           </div>
           <div class="flex items-center">
             <a class="font-normal text-sm text-neutral-200 underline cursor-pointer" @click="logout">Sair</a>
@@ -56,7 +53,7 @@
 import { useStore } from 'vuex';
 import useToastNotify from '@/hooks/toast'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue';
+import { computed, } from 'vue';
 
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/solid'

@@ -1,4 +1,4 @@
-<template>
+<template v-if="loggedInUser">
   <section class="text-center">
     <h1 class="text-primary-500 text-3xl text-center font-bold uppercase">Que os jogos comecem {{ loggedInUser.name }}!!!</h1>
     <h1 class="text-primary-500 text-2xl text-center uppercase">Página em construção.</h1>

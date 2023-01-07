@@ -10,7 +10,7 @@ const CNPJ_ID = 6
 
 export function useRegistration() {
 
-  const collaboratorForm = yup.object({
+  const personalDataForm = yup.object({
     name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     birth: yup.string().required('Campo obrigatório')
       .test('invalidDate', 'Data inválida.', function (value) {
@@ -27,6 +27,9 @@ export function useRegistration() {
     schoolingType: yup.object().required('Campo obrigatório'),
     nameMother: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     nameFather: yup.string().min(3, 'Digite no mínimo 3 caracteres'),
+  })
+
+  const documentsForm = yup.object({
     document: yup.array().of(
       yup.object().shape({
         type: yup.object().required('Campo obrigatório'),
@@ -59,12 +62,19 @@ export function useRegistration() {
         expeditionAgency: yup.string().min(2, 'Digite no mínimo 2 caracteres'),
       })
     ).strict(),
+  })
+
+  const contactsForm = yup.object({
+    email: yup.string().required('Campo obrigatório').email('E-mail inválido'),
     contact: yup.array().of(
       yup.object().shape({
         type: yup.object().required('Campo obrigatório'),
         phoneNumber: yup.string().required('Campo obrigatório').min(14, 'Número de telefone inválido.').max(15, 'Número de telefone inválido.'),
       })
-    ).strict(),
+    ).strict()
+  })
+
+  const addressesForm = yup.object({
     address: yup.object().shape({
       zipCode: yup.string().required('Campo obrigatório').length(9, 'CEP inválido.')
         .test(
@@ -83,7 +93,10 @@ export function useRegistration() {
       district: yup.string(),
       state: yup.string(),
       city: yup.string(),
-    }),
+    })
+  })
+
+  const dependentForm = yup.object({
     dependent: yup.array()
       .test(
         'dependent', '',
@@ -103,8 +116,33 @@ export function useRegistration() {
       })
       ).strict(),
   })
+  
+  const bankForm = yup.object({
+    bankName: yup.string().required('Campo obrigatório'),
+    bankAgency: yup.string().required('Campo obrigatório'),
+    bankAccount: yup.string().required('Campo obrigatório'),
+  })
+  
+  const contractForm = yup.object({
+    wage: yup.string().required('Campo obrigatório').min(6, 'Digite no mínimo 5 caracteres'),
+    occupation: yup.string().required('Campo obrigatório'),
+    start: yup.string().required('Campo obrigatório').test('invalidDate', 'Data inválida.', function (value) {
+      if (!value) {
+        return true
+      }
+      return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
+    }),
+    workingHours: yup.string().required('Campo obrigatório'),
+    comments: yup.string().min(6, 'Digite no mínimo 5 caracteres'),
+  })
 
   return {
-    collaboratorForm
+    personalDataForm,
+    documentsForm,
+    contactsForm,
+    addressesForm,
+    dependentForm,
+    bankForm,
+    contractForm
   }
 }
