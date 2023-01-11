@@ -8,10 +8,9 @@
           :class="{ 'border-red-500': errors.length, 'hidden': hidden }">
         <label :for="`${name}_${value}`" class="inline cursor-pointer text-primary-500" v-if="label">{{ label }}</label>
         <slot v-bind:field="field"></slot>
-
       </div>
     </Field>
-    <ErrorMessage :name="name" class="text-red-500 text-sm" />
+    <ErrorMessage :name="name" class="text-negative-300 text-sm" />
   </div>
 </template>
 

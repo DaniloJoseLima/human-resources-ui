@@ -2,7 +2,7 @@
   <Form v-slot="{ isSubmitting }" @submit="onSubmit" :initial-values="contractFormValues"
     :validation-schema="contractForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
-      <h2 class="text-primary-500 text-lg font-bold">Dados do Contrato - CLT</h2>
+      <h2 class="text-primary-500 text-lg font-bold">Dados do Contrato</h2>
       <div class="grid grid-cols-4 gap-4">
         <BaseInput name="wage" type="text" label="Salário" v-maska="['###,##', '#.###,##', '##.###,##', '###.###,##', '#.###.###,##']" />
         <BaseInput name="occupation" type="text" label="Função" />

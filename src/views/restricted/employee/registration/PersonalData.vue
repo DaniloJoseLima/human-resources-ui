@@ -11,7 +11,6 @@
         <BaseSelect nameModel="ethnicity" :listItens="ethnicity" label="Etnia" />
         <BaseInput name="nationality" type="text" label="Nacionalidade" />
         <BaseInput name="naturalness" type="text" label="Naturalidade" />
-        <BaseSelect nameModel="schoolingType" :listItens="schoolingTypes" label="Escolaridade" />
       </div>
       <div class="grid grid-cols-2 gap-4">
         <BaseInput name="nameMother" type="text" label="Nome da mãe" />
@@ -48,13 +47,11 @@ let collaboratorFormValues = ref({})
 let ethnicity = ref([]);
 let maritalStatus = ref([]);
 let gender = ref([]);
-let schoolingTypes = ref([]);
 
 onMounted(async () => {
   ethnicity.value = await refDataService.getEthnicityTypes()
   maritalStatus.value = await refDataService.getMaritalStatusTypes()
   gender.value = await refDataService.getGenderTypes()
-  schoolingTypes.value = await refDataService.getSchoolingTypes()
 })
 
 async function onSubmit(values) {

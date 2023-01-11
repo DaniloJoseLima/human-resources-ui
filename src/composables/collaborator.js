@@ -24,7 +24,6 @@ export function useRegistration() {
     ethnicity: yup.object().required('Campo obrigatório'),
     nationality: yup.string().required('Campo obrigatório'),
     naturalness: yup.string().required('Campo obrigatório'),
-    schoolingType: yup.object().required('Campo obrigatório'),
     nameMother: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     nameFather: yup.string().min(3, 'Digite no mínimo 3 caracteres'),
   })
@@ -116,13 +115,13 @@ export function useRegistration() {
       })
       ).strict(),
   })
-  
+
   const bankForm = yup.object({
     bankName: yup.string().required('Campo obrigatório'),
     bankAgency: yup.string().required('Campo obrigatório'),
     bankAccount: yup.string().required('Campo obrigatório'),
   })
-  
+
   const contractForm = yup.object({
     wage: yup.string().required('Campo obrigatório').min(6, 'Digite no mínimo 5 caracteres'),
     occupation: yup.string().required('Campo obrigatório'),
@@ -136,6 +135,44 @@ export function useRegistration() {
     comments: yup.string().min(6, 'Digite no mínimo 5 caracteres'),
   })
 
+  const professionalDataForm = yup.object({
+    schoolingType: yup.object().required('Campo obrigatório'),
+  })
+
+  const transportationVouchersForm = yup.object({
+    name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    rg: yup.string().required('Campo obrigatório'),
+    cpf: yup.string().required('Campo obrigatório')
+      .test('cpf-validation', 'Digite um número de CPF válido',
+        (value) => {
+          if (value) {
+            return cpf.isValid(value)
+          }
+          return true
+        }
+      ),
+    typeCardTransport: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
+    typeTransportOneWay: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
+    typeTransportReturn: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
+  })
+
+  const companyDataForm = yup.object({
+    corporateName: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    fantasyName: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    cnpj: yup.string().required('Campo obrigatório').test('cnpj-validation', 'Digite um número de CNPJ válido',
+    (value) => {
+      if (value) {
+        return cnpj.isValid(value)
+      }
+      return true
+    }
+    ),
+    stateRegistration: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    municipalRegistration: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    mainActivity: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    secondaryActivity: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+  })
+
   return {
     personalDataForm,
     documentsForm,
@@ -143,6 +180,9 @@ export function useRegistration() {
     addressesForm,
     dependentForm,
     bankForm,
-    contractForm
+    contractForm,
+    professionalDataForm,
+    transportationVouchersForm,
+    companyDataForm
   }
 }
