@@ -3,9 +3,6 @@
     :validation-schema="contactsForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Contatos</h2>
-      <div class="relative grid grid-cols-10 gap-4 pr-6">
-        <BaseInput class="col-span-5" name="email" type="text" label="E-mail" />
-      </div>
       <FieldArray name="contact" v-slot="{ fields, push, remove }">
         <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
           <div class="relative grid grid-cols-10 gap-4 pr-6">

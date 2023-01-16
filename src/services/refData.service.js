@@ -43,6 +43,18 @@ class RefDataService {
       return result.data
     });
   }
+  
+  getTransportTypes() {
+    return api.get(`/ref-data/transport-types`).then(result => {
+      return result.data
+    });
+  }
+  
+  getTransportCardTypes() {
+    return api.get(`/ref-data/transport-card-types`).then(result => {
+      return result.data
+    });
+  }
 }
 
 export default new RefDataService();

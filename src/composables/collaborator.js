@@ -19,6 +19,7 @@ export function useRegistration() {
         }
         return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
       }),
+    email: yup.string().required('Campo obrigatório').email('E-mail inválido'),
     gender: yup.object().required('Campo obrigatório'),
     maritalStatus: yup.object().required('Campo obrigatório'),
     ethnicity: yup.object().required('Campo obrigatório'),
@@ -64,7 +65,6 @@ export function useRegistration() {
   })
 
   const contactsForm = yup.object({
-    email: yup.string().required('Campo obrigatório').email('E-mail inválido'),
     contact: yup.array().of(
       yup.object().shape({
         type: yup.object().required('Campo obrigatório'),
@@ -140,17 +140,6 @@ export function useRegistration() {
   })
 
   const transportationVouchersForm = yup.object({
-    name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
-    rg: yup.string().required('Campo obrigatório'),
-    cpf: yup.string().required('Campo obrigatório')
-      .test('cpf-validation', 'Digite um número de CPF válido',
-        (value) => {
-          if (value) {
-            return cpf.isValid(value)
-          }
-          return true
-        }
-      ),
     typeCardTransport: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
     typeTransportOneWay: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
     typeTransportReturn: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
@@ -160,12 +149,12 @@ export function useRegistration() {
     corporateName: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     fantasyName: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     cnpj: yup.string().required('Campo obrigatório').test('cnpj-validation', 'Digite um número de CNPJ válido',
-    (value) => {
-      if (value) {
-        return cnpj.isValid(value)
+      (value) => {
+        if (value) {
+          return cnpj.isValid(value)
+        }
+        return true
       }
-      return true
-    }
     ),
     stateRegistration: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
     municipalRegistration: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),

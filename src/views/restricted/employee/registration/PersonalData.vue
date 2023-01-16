@@ -6,6 +6,7 @@
       <div class="grid grid-cols-4 gap-4">
         <BaseInput class="col-span-3" name="name" type="text" label="Nome" />
         <BaseInput name="birth" type="text" v-maska="'##/##/####'" label="Data de nascimento" />
+        <BaseInput class="col-span-2" name="email" type="text" label="E-mail" />
         <BaseSelect nameModel="gender" :listItens="gender" label="Genero" />
         <BaseSelect nameModel="maritalStatus" :listItens="maritalStatus" label="Estado civil" />
         <BaseSelect nameModel="ethnicity" :listItens="ethnicity" label="Etnia" />
