@@ -1,3 +1,48 @@
+
+<script setup>
+import { watch, ref, computed } from 'vue'
+import { Form, Field, ErrorMessage } from 'vee-validate'
+import collaboratorService from '../../../services/collaborator.service';
+import { useRouter, useRoute } from 'vue-router'
+
+import BaseButton from '@/components/BaseButton.vue'
+import BaseIcons from '@/components/BaseIcons.vue'
+
+import { useUtils, useSearch } from '@/composables'
+
+const router = useRouter()
+const route = useRoute()
+
+const {
+  searchFormValues,
+  searchFormValidation,
+  setSearchParams,
+} = useSearch()
+
+const { formatDate } = useUtils()
+const data = ref()
+let currentPage = computed(() => Number(route.query.page || 1))
+
+watch(
+  () => route.query,
+  async searchParams => {
+    debugger
+    data.value = await collaboratorService.list(searchParams);
+  },
+  { immediate: true }
+)
+
+
+function edite(id) {
+  router.push({ name: 'personal-data-edit', params: { id } })
+}
+
+function onSearchSubmit({ field, q }) {
+  setSearchParams({ field, q })
+}
+
+</script>
+
 <template>
   <section class="container flex space-x-4 justify-end">
     <router-link :to="{ name: 'personal-data', params: { type: 'pj' } }">
@@ -7,47 +52,53 @@
       <BaseButton type="button" outline class="p-2">Cadastrar CLT</BaseButton>
     </router-link>
   </section>
-  <Form class="relative flex-1 md:ml-14 md:mr-8 mt-8">
+  <Form v-slot="{ resetForm }" class="relative flex-1 md:ml-14 md:mr-8 mt-8" :initial-values="searchFormValues"
+    :validation-schema="searchFormValidation" @submit="onSearchSubmit">
     <div
       class="py-2 px-6 rounded-full focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary-500 border border-primary-100">
       <div class="flex space-x-4">
-          <select class="activities-search pr-6 text-neutral-500 focus-visible:outline-none">
-            <option selected>Nome</option>
-            <option>Contratação</option>
-            <option>Departamento</option>
+        <Field v-slot="{ field }" name="field">
+          <select v-bind="field" class="activities-search pr-6 text-neutral-500 focus-visible:outline-none">
+            <option value="name" selected>Nome</option>
+            <option value="contractStart">Contratação</option>
+            <option value="contractOccupation">Departamento</option>
           </select>
-        <Field v-slot="{ field }" name="q" :validate-on-blur="false" :validate-on-change="false">
-          <input v-focus v-bind="field" type="text" autocomplete="off" class="w-full outline-none border-l border-primary-500 p-2">
         </Field>
-        <button>
+        <Field v-slot="{ field }" name="q" :validate-on-blur="false" :validate-on-change="false">
+          <input v-focus v-bind="field" type="text" autocomplete="off"
+            class="w-full outline-none border-l border-primary-500 p-2">
+        </Field>
+        <button type="submit">
           <BaseIcons name="search" class="w-8 h-8 text-primary-500 m-auto" />
+        </button>
+        <button v-if="searchFormValues.q" type="button"
+          @click="setSearchParams({ field: undefined, q: undefined }), resetForm({ values: { field: 'name', q: undefined } })">
+          <BaseIcons name="close" class="w-4 h-4 text-negative-300 m-auto" />
         </button>
       </div>
     </div>
-    <ErrorMessage name="q" class="absolute ml-2 text-negative-300 text-sm" />
+    <ErrorMessage name="q" class="text-negative-300 text-sm" />
   </Form>
   <table class="table-auto w-full mt-4">
     <thead class="text-lg text-left bg-primary-100">
       <tr class="rounded-lg text-white">
-        <th class="border border-primary-200 p-2">Nome</th>
+        <th class="border border-primary-200 p-2 min-w-[150px]">Nome</th>
         <th class="border border-primary-200 p-2">Contratação</th>
         <th class="border border-primary-200 p-2">Departamento</th>
         <th class="border border-primary-200 p-2">Data admissão</th>
+        <th class="border border-primary-200 p-2"></th>
       </tr>
     </thead>
-    <template v-if="true">
+    <template v-if="data && data.list.length">
       <tbody class="border border-primary-500">
-        <tr>
-          <td class="border border-primary-100 p-2">Laura Cristina</td>
-          <td class="border border-primary-100 p-2">CLT</td>
-          <td class="border border-primary-100 p-2">TI</td>
-          <td class="border border-primary-100 p-2">01/01/2020</td>
-        </tr>
-        <tr>
-          <td class="border border-primary-100 p-2">Flávia Rita</td>
-          <td class="border border-primary-100 p-2">PJ</td>
-          <td class="border border-primary-100 p-2">Recursos Humanos</td>
-          <td class="border border-primary-100 p-2">21/07/2010</td>
+        <tr v-for="collaborator of data.list" :key="collaborator.id">
+          <td class="border border-primary-100 p-2">{{ collaborator.name }}</td>
+          <td class="border border-primary-100 p-2">{{ collaborator.contractType.toUpperCase() }}</td>
+          <td class="border border-primary-100 p-2">{{ collaborator.contract.occupation ? collaborator.contract.occupation : 'Cadastro incompleto' }}</td>
+          <td class="border border-primary-100 p-2">{{ collaborator.contract.start ? formatDate(collaborator.contract.start) : 'Cadastro incompleto' }}</td>
+          <td class="border border-primary-100 p-2"><a
+              class="font-bold text-primary-500 cursor-pointer hover:opacity-70"
+              @click="edite(collaborator.id)">Editar</a></td>
         </tr>
       </tbody>
     </template>
@@ -61,37 +112,26 @@
       </tbody>
     </template>
   </table>
-  <div class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-100">
-    <p>Exibindo 1 - 10 de 100</p>
+  <div v-if="data && data.list.length"
+    class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-100">
+    <p>Exibindo 1 - {{ data.pages }} de {{ data.totalRegisters }} registros</p>
     <div>
-      <button
-        class="relative py-2 px-4 text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200">
+      <button v-if="currentPage > 1"
+        class="relative py-2 px-4 text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        @click="setSearchParams({ page: currentPage - 1 })">
         &lt;
       </button>
-      <button v-for="page of 10" :key="page"
-        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200">
+      <button v-for="page of data.pages" :key="page"
+        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        :class="{ 'text-white bg-primary-500': currentPage === page }" @click="setSearchParams({ page })">
         {{ page }}
       </button>
-      <button
-        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 active:bg-neutral-400 transition-colors duration-200">
+      <button v-if="currentPage < data.pages"
+        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 active:bg-neutral-400 transition-colors duration-200"
+        @click="setSearchParams({ page: currentPage + 1 })">
         &gt;
       </button>
     </div>
   </div>
 
 </template>
-
-<script setup>
-import { onMounted, computed, ref } from 'vue'
-import { Form, Field } from 'vee-validate'
-import userService from '../../../services/user.service';
-
-import BaseButton from '@/components/BaseButton.vue'
-import BaseIcons from '@/components/BaseIcons.vue'
-
-
-onMounted(async () => {
-  const data = await userService.getUser();
-  console.log(data)
-})
-</script>

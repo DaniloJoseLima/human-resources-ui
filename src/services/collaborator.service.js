@@ -1,11 +1,23 @@
 import api from './api';
+import qs from 'query-string'
 
 class CollaboratorService {
 
-  create(values) {
-    return api.get(`/user/profile`).then(result => {
-      return result.data
-    });
+  async save(values) {
+    const response = await api.post("/collaborator", values);
+    return response.data;
+  }
+
+  async list(searchParams) {
+    return api.get(`/collaborator?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
+     return response.data;
+   });
+  }
+
+  async find(id) {
+    return api.get(`/collaborator/${id}`).then((response) => {
+     return response.data;
+   });
   }
 }
 

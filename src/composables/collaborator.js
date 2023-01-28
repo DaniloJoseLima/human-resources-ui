@@ -12,7 +12,7 @@ export function useRegistration() {
 
   const personalDataForm = yup.object({
     name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
-    birth: yup.string().required('Campo obrigatório')
+    birthDate: yup.string().required('Campo obrigatório')
       .test('invalidDate', 'Data inválida.', function (value) {
         if (!value) {
           return true
@@ -25,8 +25,8 @@ export function useRegistration() {
     ethnicity: yup.object().required('Campo obrigatório'),
     nationality: yup.string().required('Campo obrigatório'),
     naturalness: yup.string().required('Campo obrigatório'),
-    nameMother: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
-    nameFather: yup.string().min(3, 'Digite no mínimo 3 caracteres'),
+    motherName: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres'),
+    fatherName: yup.string().min(3, 'Digite no mínimo 3 caracteres'),
   })
 
   const documentsForm = yup.object({
@@ -140,9 +140,24 @@ export function useRegistration() {
   })
 
   const transportationVouchersForm = yup.object({
-    typeCardTransport: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
-    typeTransportOneWay: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
-    typeTransportReturn: yup.array().required('Campo obrigatório').min(1, 'Campo obrigatório'),
+    typeTransportOneWay: yup.array().of(
+      yup.object().shape({
+        type: yup.object().required('Campo obrigatório'),
+        company: yup.string().required('Campo obrigatório'),
+        line: yup.string().required('Campo obrigatório'),
+        quantity: yup.string().required('Campo obrigatório'),
+        value: yup.string().required('Campo obrigatório'),
+      })
+    ).strict(),
+    typeTransportReturn: yup.array().of(
+      yup.object().shape({
+        type: yup.object().required('Campo obrigatório'),
+        company: yup.string().required('Campo obrigatório'),
+        line: yup.string().required('Campo obrigatório'),
+        quantity: yup.string().required('Campo obrigatório'),
+        value: yup.string().required('Campo obrigatório'),
+      })
+    ).strict(),
   })
 
   const companyDataForm = yup.object({

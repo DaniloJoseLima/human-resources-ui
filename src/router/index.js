@@ -52,6 +52,11 @@ export const router = createRouter({
               component: PersonalData,
             },
             {
+              path: '/edit-personal-data/:id',
+              name: 'personal-data-edit',
+              component: PersonalData,
+            },
+            {
               path: '/documents',
               name: 'documents',
               component: Documents,
