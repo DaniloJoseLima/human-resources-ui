@@ -66,7 +66,6 @@ const loggedInUser = computed(() => store.getters['auth/currentUser'])
 
 
 function logout() {
-  console.log(loggedInUser)
   store.dispatch('auth/logout', loggedInUser.id).then(() => {
     router.push('/');
     notify('SUCCESS', "Usuário deslogado")

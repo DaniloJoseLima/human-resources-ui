@@ -10,7 +10,6 @@ const loggedInUser = computed(() => store.getters['auth/currentUser'])
 
 onMounted(async () => {
   const data = await userService.getUser();
-  console.log(data)
 })
 </script>
 <template>

@@ -13,7 +13,6 @@ import { useRegistration } from '@/composables'
 
 import refDataService from '../../../../services/refData.service'
 import CollaboratorService from '../../../../services/collaborator.service'
-import { mapKeys } from 'lodash'
 
 dayjs.extend(customParseFormat)
 
@@ -40,7 +39,6 @@ onMounted(async () => {
     const data = await CollaboratorService.find(collaboratorId)
     data.birthDate = data.birthDate ? dayjs(data.birthDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
     collaboratorFormValues.value = data
-    console.log(collaboratorFormValues)
   }
 })
 
@@ -53,7 +51,7 @@ async function onSubmit(values) {
     ethnicityTypeId: values.gender.id,
     contractType: collaboratorType
   }
-  const data = await CollaboratorService.save(collaborator)
+  const data = collaboratorId ? await CollaboratorService.update(collaborator) : await CollaboratorService.save(collaborator)
 
   router.push({ name: 'documents' });
 }

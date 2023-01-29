@@ -48,7 +48,6 @@ onMounted(async () => {
 
 async function searchCep(obj) {
   if (obj.address.zipCode && obj.address.zipCode.length === 9) {
-    debugger
     const data = await externalApi.cep(obj.address.zipCode);
     if (data.erro) {
       notify('DANGER', "CEP inválido")

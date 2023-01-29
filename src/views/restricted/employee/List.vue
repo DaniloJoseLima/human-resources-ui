@@ -26,7 +26,6 @@ let currentPage = computed(() => Number(route.query.page || 1))
 watch(
   () => route.query,
   async searchParams => {
-    debugger
     data.value = await collaboratorService.list(searchParams);
   },
   { immediate: true }
