@@ -8,24 +8,40 @@
         </figure>
       </router-link>
       <div class="flex">
-        <router-link @click="close()" :to="{ name: 'dashboard' }" 
+        <router-link v-if="verifyPermission('MENU_DASHBOARD', loggedInUser)" :to="{ name: 'dashboard' }" 
           class="flex items-center h-[86px] px-8 text-primary-500 border-b-2 border-white hover:border-primary-500 transition-colors duration-200"
           active-class="border-primary-500"
         >
           Dashboard
         </router-link>
         <Popover v-slot="{ open }" class="relative">
-          <PopoverButton>
-            <p
+          <PopoverButton v-if="verifyPermission('MENU_COLLABORATORS', loggedInUser)">
+            <p 
               class="flex items-center h-[86px] px-8 text-primary-500 border-b-2 border-white hover:border-primary-500 transition-colors duration-200">
               Colaboradores
               <ChevronDownIcon class="h-4 w-4 ml-2" :class="{ 'rotate-180 transform': open }" />
             </p>
           </PopoverButton>
-          <PopoverPanel v-slot="{ close }" class="absolute z-10 bg-white rounded-lg p-2 shadow-lg w-full border-b-2 border-neutral-50">
+          <PopoverPanel v-if="verifyPermission('MENU_COLLABORATORS_LIST', loggedInUser)" v-slot="{ close }" class="absolute z-10 bg-white rounded-lg p-2 shadow-lg w-full border-b-2 border-neutral-50">
             <div class="grid grid-cols-1 space-y-2">
-              <router-link @click="close()" :to="{ name: 'list' }" class="text-primary-500 hover:text-primary-400" active-class="font-bold">
+              <router-link @click="close()" :to="{ name: 'employee-list' }" class="text-primary-500 hover:text-primary-400" active-class="font-bold">
                 Listar
+              </router-link>
+            </div>
+          </PopoverPanel>
+        </Popover>
+        <Popover v-slot="{ open }" class="relative">
+          <PopoverButton v-if="verifyPermission('MENU_SETTINGS', loggedInUser)">
+            <p 
+              class="flex items-center h-[86px] px-8 text-primary-500 border-b-2 border-white hover:border-primary-500 transition-colors duration-200">
+              Configurações
+              <ChevronDownIcon class="h-4 w-4 ml-2" :class="{ 'rotate-180 transform': open }" />
+            </p>
+          </PopoverButton>
+          <PopoverPanel v-if="verifyPermission('MENU_SETTINGS_USERS', loggedInUser)" v-slot="{ close }" class="absolute z-10 bg-white rounded-lg p-2 shadow-lg w-full border-b-2 border-neutral-50">
+            <div class="grid grid-cols-1 space-y-2">
+              <router-link @click="close()" :to="{ name: 'users-list' }" class="text-primary-500 hover:text-primary-400" active-class="font-bold">
+                Usuário
               </router-link>
             </div>
           </PopoverPanel>
@@ -58,12 +74,17 @@ import { computed, } from 'vue';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/solid'
 
+import { userRoles } from '@/composables'
+
 const store = useStore()
 const { notify } = useToastNotify();
 const router = useRouter()
 
-const loggedInUser = computed(() => store.getters['auth/currentUser'])
+const { 
+  verifyPermission
+} = userRoles()
 
+const loggedInUser = computed(() => store.getters['auth/currentUser'])
 
 function logout() {
   store.dispatch('auth/logout', loggedInUser.id).then(() => {

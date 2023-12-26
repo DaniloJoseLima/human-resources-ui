@@ -9,8 +9,8 @@ const store = useStore()
 const loggedInUser = computed(() => store.getters['auth/currentUser'])
 
 onMounted(async () => {
-  const data = await userService.getUser();
 })
+
 </script>
 <template>
   <section v-if="loggedInUser && loggedInUser.name" class="text-center">

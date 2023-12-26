@@ -13,13 +13,16 @@ export const auth =  {
   state: initialState,
   getters: {
     currentUser (state) {
-      return state.user;
+      return state.credentitals.user;
     },
     loggedIn (state) {  
       return state.status.loggedIn
     },
     getCredentials(state) { 
       return state.credentitals
+    },
+    getPermissions(state) { 
+      return state.user.permissions
     }
   },
   mutations: {

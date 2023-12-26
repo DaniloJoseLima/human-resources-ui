@@ -55,6 +55,12 @@ class RefDataService {
       return result.data
     });
   }
+
+  getRoles() {
+    return api.get(`/ref-data/roles`).then(result => {
+      return result.data
+    });
+  }
 }
 
 export default new RefDataService();

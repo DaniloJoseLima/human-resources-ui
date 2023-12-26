@@ -33,7 +33,7 @@
           </div>
         </fieldset>
         <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
-          @click="push()">Adicionar novo documento</a>
+          @click="push({ type: { id: null, name: null } })">Adicionar novo documento</a>
       </FieldArray>
     </div>
     <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>

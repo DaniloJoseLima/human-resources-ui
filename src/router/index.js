@@ -17,6 +17,9 @@ import ContractData from '@/views/restricted/employee/registration/ContractData.
 import ProfessionalData from '@/views/restricted/employee/registration/ProfessionalData.vue'
 import TransportationVouchers from '@/views/restricted/employee/registration/TransportationVouchers.vue'
 import CompanyData from '@/views/restricted/employee/registration/CompanyData.vue'
+import Settings from '@/views/restricted/settings/Settings.vue'
+import ListUsers from '@/views/restricted/settings/users/List.vue'
+import EditUsers from '@/views/restricted/settings/users/Edit.vue'
 
 export const router = createRouter({
   routes: [
@@ -33,7 +36,7 @@ export const router = createRouter({
       ]
     },
     {
-      path: '/user',
+      path: '/restricted',
       component: Restricted,
       children: [
         {
@@ -42,8 +45,8 @@ export const router = createRouter({
           component: Dashboard,
         },
         {
-          path: '/registration',
-          name: 'registration',
+          path: '/employee-registration',
+          name: 'employee-registration',
           component: Registration,
           children: [
             {
@@ -104,9 +107,27 @@ export const router = createRouter({
           ]
         },
         {
-          path: '/list',
-          name: 'list',
+          path: '/employee-list',
+          name: 'employee-list',
           component: List,
+        },
+        
+        {
+          path: '/settings',
+          name: 'settings',
+          component: Settings,
+          children: [
+            {
+              path: '/users/list',
+              name: 'users-list',
+              component: ListUsers,
+            },            
+            {
+              path: '/users/edit/:id',
+              name: 'users-edit',
+              component: EditUsers,
+            },
+          ]
         },
       ]
     }
