@@ -42,7 +42,12 @@
         </FieldArray>
       </div>
     </div>
-    <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>
+    <div class="flex justify-between">
+      <router-link :to="{ name: 'employee-list' }" >
+        <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
+      </router-link>
+      <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>
+    </div>
   </Form>
 </template>
 <script setup>

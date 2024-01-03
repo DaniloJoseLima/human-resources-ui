@@ -31,9 +31,8 @@ watch(
   { immediate: true }
 )
 
-
 function edite(id) {
-  router.push({ name: 'personal-data-edit', params: { id } })
+  router.push({ name: 'personal-data', query: { id } })
 }
 
 function onSearchSubmit({ field, q }) {
@@ -43,12 +42,9 @@ function onSearchSubmit({ field, q }) {
 </script>
 
 <template>
-  <section class="container flex space-x-4 justify-end">
-    <router-link :to="{ name: 'personal-data', params: { type: 'pj' } }">
-      <BaseButton type="button" outline class="p-2">Cadastrar PJ</BaseButton>
-    </router-link>
-    <router-link :to="{ name: 'personal-data', params: { type: 'clt' } }">
-      <BaseButton type="button" outline class="p-2">Cadastrar CLT</BaseButton>
+  <section class="flex justify-end">
+    <router-link :to="{ name: 'personal-data' }">
+      <BaseButton type="button" outline class="p-2">Cadastrar</BaseButton>
     </router-link>
   </section>
   <Form v-slot="{ resetForm }" class="relative flex-1 md:ml-14 md:mr-8 mt-8" :initial-values="searchFormValues"

@@ -32,8 +32,8 @@ export function useRegistration() {
   const documentsForm = yup.object({
     document: yup.array().of(
       yup.object().shape({
-        type: yup.object().required('Campo obrigatório'),
-        number: yup.string().required('Campo obrigatório')
+        documentType: yup.object().required('Campo obrigatório'),
+        documentNumber: yup.string().required('Campo obrigatório')
           .test('cpf-validation', 'Digite um número de CPF válido',
             (value, ref) => {
               const { type } = ref.parent
@@ -65,9 +65,9 @@ export function useRegistration() {
   })
 
   const contactsForm = yup.object({
-    contact: yup.array().of(
+    contacts: yup.array().of(
       yup.object().shape({
-        type: yup.object().required('Campo obrigatório'),
+        contactTypes: yup.object().required('Campo obrigatório'),
         phoneNumber: yup.string().required('Campo obrigatório').min(14, 'Número de telefone inválido.').max(15, 'Número de telefone inválido.'),
       })
     ).strict()

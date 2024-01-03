@@ -29,6 +29,39 @@ class CollaboratorService {
      return response.data;
    });
   }
+
+  async saveDocuments(values) {
+    const response = await api.post("/collaborator/documents", values);
+    return response.data;
+  }
+
+  async findDocuments(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/documents`).then((response) => {
+     return response.data;
+   });
+  }  
+
+  async saveContacts(values) {
+    const response = await api.post("/collaborator/contacts", values);
+    return response.data;
+  }
+
+  async findContacts(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/contacts`).then((response) => {
+     return response.data;
+   });
+  }  
+
+  async saveAddress(values) {
+    const response = await api.post("/collaborator/address", values);
+    return response.data;
+  }
+
+  async findAddress(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/address`).then((response) => {
+     return response.data;
+   });
+  }
 }
 
 export default new CollaboratorService();

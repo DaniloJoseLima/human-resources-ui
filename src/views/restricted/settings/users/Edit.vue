@@ -41,7 +41,7 @@ onMounted(async () => {
 async function onSubmit(values) {
   values.id = id
   UserService.update(values).then(() => {
-    notify('SUCCESS', "Alteração realizado com sucesso!.")
+    notify('SUCCESS', "Alteração realizada com sucesso!")
     router.push({ name: 'users-list' });
   }, error => {
     console.error(error)

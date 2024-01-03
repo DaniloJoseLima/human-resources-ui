@@ -50,13 +50,8 @@ export const router = createRouter({
           component: Registration,
           children: [
             {
-              path: '/personal-data/:type',
+              path: '/personal-data',
               name: 'personal-data',
-              component: PersonalData,
-            },
-            {
-              path: '/edit-personal-data/:id',
-              name: 'personal-data-edit',
               component: PersonalData,
             },
             {
