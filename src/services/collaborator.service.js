@@ -57,6 +57,11 @@ class CollaboratorService {
     return response.data;
   }
 
+  async updateAddress(values) {
+    const response = await api.put("/collaborator/address", values);
+    return response.data;
+  }
+
   async findAddress(collaboratorId) {
     return api.get(`/collaborator/${collaboratorId}/address`).then((response) => {
      return response.data;

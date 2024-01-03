@@ -26,7 +26,7 @@ const collaboratorType = route.query.type
 let addressesFormValues = ref({})
 
 onMounted(async () => {
-  if(collaboratorId) {
+  if (collaboratorId) {
     await collaboratorService.findAddress(collaboratorId).then((response) => {
       addressesFormValues.value.address = response
     })
@@ -57,18 +57,33 @@ async function searchCep(obj) {
 }
 
 async function onSubmit(values) {
-  values.address.collaboratorId = collaboratorId
-  values.address.addressTypes = {id: 1}
-  values.address.country = 'Brasil'
-  await collaboratorService.saveAddress(values.address).then((response) => {
-    notify('SUCCESS', "Endereço salvo com sucesso!")
-    router.push({ name: 'dependents', query: { id: collaboratorId, type: collaboratorType } });
-  }, (error) => {
-    const msg = {
-      'error': 'Erro ao salvar informações.'
-    }[error.response.data.message || 'Erro ao salvar.']
-    notify('DANGER', msg)
-  })
+  if (addressesFormValues.value.address && addressesFormValues.value.address.id) {
+    values.address.id = addressesFormValues.value.address.id
+    values.address.addressTypes = addressesFormValues.value.address.addressTypes
+    values.address.addressTypes = { id: addressesFormValues.value.address.addressTypeId }
+    await collaboratorService.updateAddress(values.address).then((response) => {
+      notify('SUCCESS', "Endereço Atualizado com sucesso!")
+    }, (error) => {
+      debugger
+      const msg = {
+        'error': 'Erro ao atualizar informações.'
+      }[error.response.data.message || 'Erro ao atualizar.']
+      notify('DANGER', msg)
+    })
+  } else {
+    values.address.collaboratorId = collaboratorId
+    values.address.addressTypes = { id: 1 }
+    values.address.country = 'Brasil'
+    await collaboratorService.saveAddress(values.address).then((response) => {
+      notify('SUCCESS', "Endereço salvo com sucesso!")
+      router.push({ name: 'dependents', query: { id: collaboratorId, type: collaboratorType } });
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar informações.'
+      }[error.response.data.message || 'Erro ao salvar.']
+      notify('DANGER', msg)
+    })
+  }
 }
 </script>
 <template>
@@ -91,7 +106,7 @@ async function onSubmit(values) {
       </div>
     </div>
     <div class="flex justify-between">
-      <router-link :to="{ name: 'employee-list' }" >
+      <router-link :to="{ name: 'employee-list' }">
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>
       <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>
