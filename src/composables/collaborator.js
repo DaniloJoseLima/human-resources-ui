@@ -58,8 +58,8 @@ export function useRegistration() {
           }
           return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
         }),
-        expeditionUf: yup.string().min(2, 'Digite no mínimo 2 caracteres'),
-        expeditionAgency: yup.string().min(2, 'Digite no mínimo 2 caracteres'),
+        expeditionUf: yup.string().min(2, 'Digite no mínimo 2 caracteres').nullable(),
+        expeditionAgency: yup.string().min(2, 'Digite no mínimo 2 caracteres').nullable(),
       })
     ).strict(),
   })
@@ -97,14 +97,8 @@ export function useRegistration() {
 
   const dependentForm = yup.object({
     dependent: yup.array()
-      .test(
-        'dependent', '',
-        (value) => {
-          return !value ? true : false
-        }
-      )
       .of(yup.object().shape({
-        type: yup.object().required('Campo obrigatório'),
+        dependentTypes: yup.object().required('Campo obrigatório'),
         name: yup.string().required('Campo obrigatório').min(3, 'Digite no mínimo 3 caracteres.'),
         birthDate: yup.string().required('Campo obrigatório').test('invalidDate', 'Data inválida.', function (value) {
           if (!value) {
@@ -112,14 +106,20 @@ export function useRegistration() {
           }
           return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
         }),
+        genderTypes: yup.object().required('Campo obrigatório'),
+        maritalStatusTypes: yup.object().required('Campo obrigatório'),
       })
       ).strict(),
   })
 
   const bankForm = yup.object({
-    bankName: yup.string().required('Campo obrigatório'),
-    bankAgency: yup.string().required('Campo obrigatório'),
-    bankAccount: yup.string().required('Campo obrigatório'),
+    name: yup.string().required('Campo obrigatório'),
+    agency: yup.string().required('Campo obrigatório'),
+    account: yup.string().required('Campo obrigatório'),
+    accountType: yup.object().required('Campo obrigatório'),
+    accountCategory: yup.object().required('Campo obrigatório'),
+    pixKeyType: yup.object(),
+    pixKey: yup.string().min(6, 'Digite no mínimo 5 caracteres'),
   })
 
   const contractForm = yup.object({

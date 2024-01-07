@@ -30,12 +30,14 @@ let contactsFormValues = ref({
 
 let contactTypes = ref([]);
 let validateList = ref(false);
+let isRegister = ref(false);
 
 onMounted(async () => {
   contactTypes.value = await refDataService.getContactTypes()
   if(collaboratorId) {
     await collaboratorService.findContacts(collaboratorId).then((response) => {
       if(response.length > 0) {
+        isRegister.value = true
         for (let index = 0; index < response.length; index++) {
           const element = response[index];
           element.contactTypes =  contactTypes.value.find(d => d.id == element.contactTypeId)
@@ -47,17 +49,32 @@ onMounted(async () => {
   }
 })
 
+async function removeItemForm(index) {
+  contactsFormValues.value.contacts.splice(index, 1)
+}
+
 async function onSubmit(values) {
   values.id = collaboratorId
-  await collaboratorService.saveContacts(values).then((response) => {
-    notify('SUCCESS', "Contatos salvo com sucesso!")
-    router.push({ name: 'addresses', query: { id: collaboratorId, type: collaboratorType } });
-  }, (error) => {
-    const msg = {
-      'error': 'Erro ao salvar informações.'
-    }[error.response.data.message || 'Erro ao salvar.']
-    notify('DANGER', msg)
-  })
+  if(!isRegister.value) {
+    await collaboratorService.saveContacts(values).then((response) => {
+      notify('SUCCESS', "Contatos salvo com sucesso!")
+      router.push({ name: 'addresses', query: { id: collaboratorId, type: collaboratorType } });
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar informações.'
+      }[error.response.data.message || 'Erro ao salvar.']
+      notify('DANGER', msg)
+    })
+  } else {
+    await collaboratorService.updateContacts(values).then((response) => {
+      notify('SUCCESS', "Contatos atualizados com sucesso!")
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar informações.'
+      }[error.response.data.message || 'Erro ao salvar.']
+      notify('DANGER', msg)
+    })
+  }
 }
 </script>
 
@@ -72,9 +89,9 @@ async function onSubmit(values) {
             <div class="relative grid grid-cols-10 gap-4 pr-6">
               <BaseSelect :nameModel="`contacts[${idx}].contactTypes`" :listItens="contactTypes" label="Tipo" />
               <BaseInput class="col-span-3" :name="`contacts[${idx}].phoneNumber`" type="text" label="Número"
-                v-maska="['(##) ####-####', '(##) #####-####']" />
+                v-maska="['(##) ####-####', '(##) #####-####']" :value="field.value.phoneNumber" />
               <button class="inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
-                @click="remove(idx)" v-if="idx > 0">X</button>
+                @click="remove(idx), removeItemForm(idx)" v-if="idx > 0">X</button>
             </div>
           </fieldset>
           <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
