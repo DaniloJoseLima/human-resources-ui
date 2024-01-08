@@ -26,6 +26,7 @@ const props = defineProps({
     required: false
   },
   value: {
+    type: Boolean,
     required: false
   },
   hidden: {

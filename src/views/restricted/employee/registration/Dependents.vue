@@ -35,6 +35,7 @@ let dependentTypes = ref([]);
 let gender = ref([]);
 let maritalStatus = ref([]);
 let validateList = ref(false);
+let isRegister = ref(false);
 
 onMounted(async () => {
   dependentTypes.value = await refDataService.getDependentTypes()
@@ -43,6 +44,7 @@ onMounted(async () => {
   if(collaboratorId) {
     await collaboratorService.findDependents(collaboratorId).then((response) => {
       if(response.length > 0) {
+        isRegister.value = true;
         for (let index = 0; index < response.length; index++) {
           const element = response[index];
           element.birthDate = element.birthDate ? dayjs(element.birthDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
@@ -61,16 +63,28 @@ async function onSubmit(values) {
   const dependent = values.dependent
   for (let index = 0; index < dependent.length; index++) {
     dependent[index].birthDate = dayjs(dependent[index].birthDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+    dependent[index].expeditionDate = dependent[index].expeditionDate ? dayjs(dependent[index].birthDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss') : null
   }
-  await collaboratorService.saveDependents(dependent).then((response) => {
-    notify('SUCCESS', "Dependentes salvo com sucesso!")
-    router.push({ name: 'bank', query: { id: collaboratorId, type: collaboratorType } });
-  }, (error) => {
-    const msg = {
-      'error': 'Erro ao salvar dependentes.'
-    }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
-    notify('DANGER', msg)
-  })
+  if(!isRegister.value) {
+    await collaboratorService.saveDependents(dependent).then((response) => {
+      notify('SUCCESS', "Dependentes salvo com sucesso!")
+      router.push({ name: 'bank', query: { id: collaboratorId, type: collaboratorType } });
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar dependentes.'
+      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      notify('DANGER', msg)
+    })
+  } else {
+    await collaboratorService.updateDependents(dependent).then((response) => {
+      notify('SUCCESS', "Dependentes Atualizados com sucesso!")
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar dependentes.'
+      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      notify('DANGER', msg)
+    })
+  }
 }
 </script>
 
@@ -81,7 +95,6 @@ async function onSubmit(values) {
       <h2 class="text-primary-500 text-lg font-bold">Dependentes</h2>
       <FieldArray name="dependent" v-slot="{ fields, push, remove }">
         <fieldset class="!mt-0 InputGroup" v-for="(field, idx) in fields" :key="field.key">
-          {{ field.value.name }}
           <div class="relative grid grid-cols-12 gap-4 pr-6 py-6"
             :class="{ 'border-t border-dashed border-primary-100': idx > 0 }">
             <BaseSelect class="col-span-2" :nameModel="`dependent[${idx}].dependentTypes`" :listItens="dependentTypes"
@@ -103,8 +116,8 @@ async function onSubmit(values) {
               label="Orgão expedidor" :value="field.value.expeditionAgency" />
             <BaseInput class="col-span-6" :name="`dependent[${idx}].nameMother`" type="text" label="Nome da mãe" :value="field.value.nameMother" />
             <BaseInput class="col-span-6" :name="`dependent[${idx}].nameFather`" type="text" label="Nome do pai" :value="field.value.nameFather" />
-            <BaseCheckbox class="col-span-3" :name="`dependent[${idx}].irpfDependent`" type="text"
-              label="É dependente de IRRF?" :value="!field.value.irpfDependent" />
+            <BaseCheckbox class="col-span-3" :name="`dependent[${idx}].irpfDependent`" type="radion"
+              label="É dependente de IRRF?" :value="field.value.irpfDependent" />
             <button class="absolute right-0 top-6 text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70"
               type="button" @click="remove(idx)">X</button>
           </div>

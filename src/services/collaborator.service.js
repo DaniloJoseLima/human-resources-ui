@@ -93,6 +93,22 @@ class CollaboratorService {
       return response.data;
     });
   }
+
+  async saveBankData(values) {
+    const response = await api.post("/collaborator/bank-data", values);
+    return response.data;
+  }
+
+  async updateBankData(values) {
+    const response = await api.put("/collaborator/bank-data", values);
+    return response.data;
+  }
+
+  async findBankData(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/bank-data`).then((response) => {
+      return response.data;
+    });
+  }
 }
 
 export default new CollaboratorService();
