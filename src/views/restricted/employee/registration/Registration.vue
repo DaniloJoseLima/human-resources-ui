@@ -3,7 +3,7 @@
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import collaboratorService from '../../../../services/collaborator.service';
+import CollaboratorService from '../../../../services/collaborator.service';
 
 const route = useRoute()
 const router = useRouter()
@@ -18,7 +18,7 @@ watch(
     collaboratorId.value = route.query.id
     collaboratorType.value = route.params.type
     if (collaboratorId.value) {
-      registrationVerification.value = await collaboratorService.registrationVerification(collaboratorId.value)
+      registrationVerification.value = await CollaboratorService.registrationVerification(collaboratorId.value)
       collaboratorType.value = registrationVerification.value.contractType
     }
   },

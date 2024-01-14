@@ -11,7 +11,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 
 import { useRegistration } from '@/composables'
-import collaboratorService from '../../../../services/collaborator.service'
+import CollaboratorService from '../../../../services/collaborator.service'
 
 const router = useRouter()
 const route = useRoute()
@@ -43,7 +43,7 @@ const pixKeyType = ref([
 
 onMounted(async () => {
   if (collaboratorId) {
-    await collaboratorService.findBankData(collaboratorId).then((response) => {
+    await CollaboratorService.findBankData(collaboratorId).then((response) => {
       response.accountType =  accountType.value.find(d => d.id == response.accountType)
       response.accountCategory =  accountCategory.value.find(d => d.id == response.accountCategory)
       response.pixKeyType =  pixKeyType.value.find(d => d.id == response.pixKeyType)
@@ -55,23 +55,23 @@ onMounted(async () => {
 async function onSubmit(values) {
   values.collaboratorId = collaboratorId
   if(!bankFormValues.value || (bankFormValues.value && !bankFormValues.value.collaboratorId)) {
-    await collaboratorService.saveBankData(values).then((response) => {
+    await CollaboratorService.saveBankData(values).then((response) => {
       notify('SUCCESS', "Dados bancário salvo com sucesso!")
       router.push({ name: 'contract', query: { id: collaboratorId, type: collaboratorType } });
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar Dados bancário.'
-      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao salvar.']
       notify('DANGER', msg)
     })
   } else {
     values.id = bankFormValues.value.id
-    await collaboratorService.updateBankData(values).then((response) => {
+    await CollaboratorService.updateBankData(values).then((response) => {
       notify('SUCCESS', "Dados bancário Atualizados com sucesso!")
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar Dados bancário.'
-      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao salvar.']
       notify('DANGER', msg)
     })
   }

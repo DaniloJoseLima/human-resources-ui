@@ -2,7 +2,7 @@
 <script setup>
 import { watch, ref, computed } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import collaboratorService from '../../../services/collaborator.service';
+import CollaboratorService from '../../../services/collaborator.service';
 import { useRouter, useRoute } from 'vue-router'
 
 import BaseButton from '@/components/BaseButton.vue'
@@ -26,7 +26,7 @@ let currentPage = computed(() => Number(route.query.page || 1))
 watch(
   () => route.query,
   async searchParams => {
-    data.value = await collaboratorService.list(searchParams);
+    data.value = await CollaboratorService.list(searchParams);
   },
   { immediate: true }
 )

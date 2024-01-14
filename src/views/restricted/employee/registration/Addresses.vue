@@ -10,7 +10,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import { useRegistration } from '@/composables'
 
 import externalApi from '../../../../services/externalApi.service';
-import collaboratorService from '../../../../services/collaborator.service'
+import CollaboratorService from '../../../../services/collaborator.service'
 
 const {
   addressesForm
@@ -27,7 +27,7 @@ let addressesFormValues = ref({})
 
 onMounted(async () => {
   if (collaboratorId) {
-    await collaboratorService.findAddress(collaboratorId).then((response) => {
+    await CollaboratorService.findAddress(collaboratorId).then((response) => {
       addressesFormValues.value.address = response
     })
   }
@@ -61,7 +61,7 @@ async function onSubmit(values) {
     values.address.id = addressesFormValues.value.address.id
     values.address.addressTypes = addressesFormValues.value.address.addressTypes
     values.address.addressTypes = { id: addressesFormValues.value.address.addressTypeId }
-    await collaboratorService.updateAddress(values.address).then((response) => {
+    await CollaboratorService.updateAddress(values.address).then((response) => {
       notify('SUCCESS', "Endereço Atualizado com sucesso!")
     }, (error) => {
       debugger
@@ -74,7 +74,7 @@ async function onSubmit(values) {
     values.address.collaboratorId = collaboratorId
     values.address.addressTypes = { id: 1 }
     values.address.country = 'Brasil'
-    await collaboratorService.saveAddress(values.address).then((response) => {
+    await CollaboratorService.saveAddress(values.address).then((response) => {
       notify('SUCCESS', "Endereço salvo com sucesso!")
       router.push({ name: 'dependents', query: { id: collaboratorId, type: collaboratorType } });
     }, (error) => {

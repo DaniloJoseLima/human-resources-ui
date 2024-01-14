@@ -12,7 +12,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import { useRegistration } from '@/composables'
 
 import refDataService from '../../../../services/refData.service'
-import collaboratorService from '../../../../services/collaborator.service'
+import CollaboratorService from '../../../../services/collaborator.service'
 const {
   contactsForm
 } = useRegistration()
@@ -35,7 +35,7 @@ let isRegister = ref(false);
 onMounted(async () => {
   contactTypes.value = await refDataService.getContactTypes()
   if(collaboratorId) {
-    await collaboratorService.findContacts(collaboratorId).then((response) => {
+    await CollaboratorService.findContacts(collaboratorId).then((response) => {
       if(response.length > 0) {
         isRegister.value = true
         for (let index = 0; index < response.length; index++) {
@@ -54,9 +54,10 @@ async function removeItemForm(index) {
 }
 
 async function onSubmit(values) {
+  debugger
   values.id = collaboratorId
   if(!isRegister.value) {
-    await collaboratorService.saveContacts(values).then((response) => {
+    await CollaboratorService.saveContacts(values).then((response) => {
       notify('SUCCESS', "Contatos salvo com sucesso!")
       router.push({ name: 'addresses', query: { id: collaboratorId, type: collaboratorType } });
     }, (error) => {
@@ -66,7 +67,7 @@ async function onSubmit(values) {
       notify('DANGER', msg)
     })
   } else {
-    await collaboratorService.updateContacts(values).then((response) => {
+    await CollaboratorService.updateContacts(values).then((response) => {
       notify('SUCCESS', "Contatos atualizados com sucesso!")
     }, (error) => {
       const msg = {

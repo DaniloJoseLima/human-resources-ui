@@ -15,7 +15,7 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue'
 import { useRegistration } from '@/composables'
 
 import refDataService from '../../../../services/refData.service'
-import collaboratorService from '../../../../services/collaborator.service'
+import CollaboratorService from '../../../../services/collaborator.service'
 
 dayjs.extend(customParseFormat)
 
@@ -42,12 +42,13 @@ onMounted(async () => {
   gender.value = await refDataService.getGenderTypes()
   maritalStatus.value = await refDataService.getMaritalStatusTypes()
   if(collaboratorId) {
-    await collaboratorService.findDependents(collaboratorId).then((response) => {
+    await CollaboratorService.findDependents(collaboratorId).then((response) => {
       if(response.length > 0) {
         isRegister.value = true;
         for (let index = 0; index < response.length; index++) {
           const element = response[index];
           element.birthDate = element.birthDate ? dayjs(element.birthDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
+          element.expeditionDate = element.expeditionDate ? dayjs(element.expeditionDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
           element.dependentTypes =  dependentTypes.value.find(d => d.id == element.dependentTypeId)
           element.genderTypes =  gender.value.find(d => d.id == element.genderTypeId)
           element.maritalStatusTypes =  maritalStatus.value.find(d => d.id == element.maritalStatusTypeId)
@@ -63,25 +64,25 @@ async function onSubmit(values) {
   const dependent = values.dependent
   for (let index = 0; index < dependent.length; index++) {
     dependent[index].birthDate = dayjs(dependent[index].birthDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
-    dependent[index].expeditionDate = dependent[index].expeditionDate ? dayjs(dependent[index].birthDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss') : null
+    dependent[index].expeditionDate = dependent[index].expeditionDate ? dayjs(dependent[index].expeditionDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss') : null
   }
   if(!isRegister.value) {
-    await collaboratorService.saveDependents(dependent).then((response) => {
+    await CollaboratorService.saveDependents(dependent).then((response) => {
       notify('SUCCESS', "Dependentes salvo com sucesso!")
       router.push({ name: 'bank', query: { id: collaboratorId, type: collaboratorType } });
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar dependentes.'
-      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao salvar.']
       notify('DANGER', msg)
     })
   } else {
-    await collaboratorService.updateDependents(dependent).then((response) => {
+    await CollaboratorService.updateDependents(dependent).then((response) => {
       notify('SUCCESS', "Dependentes Atualizados com sucesso!")
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar dependentes.'
-      }[error.response && error.responsedata && error.response.data.message || 'Erro ao salvar.']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao salvar.']
       notify('DANGER', msg)
     })
   }
@@ -117,7 +118,7 @@ async function onSubmit(values) {
             <BaseInput class="col-span-6" :name="`dependent[${idx}].nameMother`" type="text" label="Nome da mãe" :value="field.value.nameMother" />
             <BaseInput class="col-span-6" :name="`dependent[${idx}].nameFather`" type="text" label="Nome do pai" :value="field.value.nameFather" />
             <BaseCheckbox class="col-span-3" :name="`dependent[${idx}].irpfDependent`" type="radion"
-              label="É dependente de IRRF?" :value="field.value.irpfDependent" />
+              label="É dependente de IRRF?" :value="true" />
             <button class="absolute right-0 top-6 text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70"
               type="button" @click="remove(idx)">X</button>
           </div>

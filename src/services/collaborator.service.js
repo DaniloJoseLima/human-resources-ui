@@ -109,6 +109,39 @@ class CollaboratorService {
       return response.data;
     });
   }
+  
+  async saveContractData(values) {
+    const response = await api.post("/collaborator/contract-data", values);
+    return response.data;
+  }
+
+  async updateContractData(values) {
+    const response = await api.put("/collaborator/contract-data", values);
+    return response.data;
+  }
+
+  async findContractData(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/contract-data`).then((response) => {
+      return response.data;
+    });
+  }
+
+  
+  async saveProfessionalData(values) {
+    const response = await api.post("/collaborator/professional-data", values);
+    return response.data;
+  }
+
+  async updateProfessionalData(values) {
+    const response = await api.put("/collaborator/professional-data", values);
+    return response.data;
+  }
+
+  async findProfessionalData(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/professional-data`).then((response) => {
+      return response.data;
+    });
+  }
 }
 
 export default new CollaboratorService();

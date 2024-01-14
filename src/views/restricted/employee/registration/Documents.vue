@@ -71,7 +71,6 @@ function showInput(documentTypeId, inputType) {
 }
 
 async function onSubmit(values) {
-  debugger
   values.id = collaboratorId
   const documents = values.document
   for (let index = 0; index < documents.length; index++) {

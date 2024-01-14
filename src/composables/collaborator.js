@@ -123,7 +123,7 @@ export function useRegistration() {
   })
 
   const contractForm = yup.object({
-    wage: yup.string().required('Campo obrigatório').min(6, 'Digite no mínimo 5 caracteres'),
+    remuneration: yup.string().required('Campo obrigatório').min(6, 'Digite no mínimo 5 caracteres'),
     occupation: yup.string().required('Campo obrigatório'),
     start: yup.string().required('Campo obrigatório').test('invalidDate', 'Data inválida.', function (value) {
       if (!value) {
@@ -131,12 +131,18 @@ export function useRegistration() {
       }
       return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
     }),
+    end: yup.string().test('invalidDate', 'Data inválida.', function (value) {
+      if (!value) {
+        return true
+      }
+      return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
+    }).nullable(),
     workingHours: yup.string().required('Campo obrigatório'),
     comments: yup.string().min(6, 'Digite no mínimo 5 caracteres'),
   })
 
   const professionalDataForm = yup.object({
-    schoolingType: yup.object().required('Campo obrigatório'),
+    schoolingTypes: yup.object().required('Campo obrigatório'),
   })
 
   const transportationVouchersForm = yup.object({
