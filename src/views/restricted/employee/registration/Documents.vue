@@ -9,6 +9,7 @@ import useToastNotify from '@/hooks/toast'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import BaseModal from '@/components/BaseModal.vue'
 
 import { useRegistration } from '@/composables'
 
@@ -35,24 +36,29 @@ let documentsFormValues = ref({
 let documentsType = ref([]);
 let validateList = ref(false);
 let isRegister = ref(false);
+let modalDelete = ref(false)
 
 onMounted(async () => {
   documentsType.value = await refDataService.getDocumentsTypes()
   if (collaboratorId) {
-    await CollaboratorService.findDocuments(collaboratorId).then((response) => {
-      if (response.length > 0) {
-        isRegister.value = true
-        for (let index = 0; index < response.length; index++) {
-          const element = response[index];
-          element.expeditionDate = element.expeditionDate ? dayjs(element.expeditionDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
-          element.documentType = documentsType.value.find(d => d.id == element.documentTypeId)
-        }
-        documentsFormValues.value.document = response
-      }
-      validateList.value = true
-    })
+    await loadData()
   }
+  validateList.value = true
 })
+
+async function loadData() {
+  await CollaboratorService.findDocuments(collaboratorId).then((response) => {
+    if (response.length > 0) {
+      isRegister.value = true
+      for (let index = 0; index < response.length; index++) {
+        const element = response[index];
+        element.expeditionDate = element.expeditionDate ? dayjs(element.expeditionDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
+        element.documentType = documentsType.value.find(d => d.id == element.documentTypeId)
+      }
+      documentsFormValues.value.document = response
+    }
+  })
+}
 
 function showInput(documentTypeId, inputType) {
   if (documentTypeId == 1 && inputType != 'zone' && inputType != 'session' && inputType != 'city') {
@@ -78,26 +84,42 @@ async function onSubmit(values) {
       documents[index].expeditionDate = dayjs(documents[index].expeditionDate, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
     }
   }
-  if(!isRegister.value) {
+  if (!isRegister.value) {
     await CollaboratorService.saveDocuments(values).then((response) => {
       notify('SUCCESS', "Documentos salvo com sucesso!")
       router.push({ name: 'contacts', query: { id: collaboratorId, type: collaboratorType } });
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar informações.'
-      }[error.response.data.message || 'Erro ao salvar.']
-      notify('DANGER', msg)
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
     })
   } else {
-    await CollaboratorService.updateDocuments(values).then((response) => {
+    await CollaboratorService.updateDocuments(values).then(async (response) => {
+      await loadData()
       notify('SUCCESS', "Documentos atualizados com sucesso!")
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar informações.'
-      }[error.response.data.message || 'Erro ao salvar.']
-      notify('DANGER', msg)
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
     })
   }
+}
+
+async function deleteObject(objectToDelete) {
+  await CollaboratorService.deleteDocuments(objectToDelete.id).then(async (response) => {
+    notify('SUCCESS', "Documento deletado com sucesso!")
+    validateList.value = false
+    await loadData()
+    validateList.value = true
+  }, (error) => {
+    const msg = {
+      'error': 'Erro ao deletar documento.'
+    }[error.response.data.message || 'Erro ao deletar.']
+    notify('DANGER', msg)
+  })
+  modalDelete.value.close()
 }
 </script>
 <template>
@@ -133,7 +155,8 @@ async function onSubmit(values) {
             <BaseInput v-if="showInput(values.document[idx].documentType.id, 'city')" class="col-span-2"
               :name="`document[${idx}].city`" type="text" label="Cidade" :value="field.value.city" />
             <button class="absolute right-0 top-2.5 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
-              @click="remove(idx)" v-if="idx > 0">X</button>
+              @click="(!field.value.id ? remove(idx) : modalDelete.open({ objectToDelete: field.value }))"
+              v-if="fields.length > 1">X</button>
           </div>
         </fieldset>
         <a class="inline-block underline text-primary-300 cursor-pointer hover:opacity-70 mt-4"
@@ -148,4 +171,15 @@ async function onSubmit(values) {
       <BaseButton type="submit" class="md:w-40 text-right m-auto mr-0" :loading="isSubmitting" outline>Salvar</BaseButton>
     </div>
   </Form>
+  <BaseModal ref="modalDelete" v-slot="{ objectToDelete }">
+    <div class="min-w-full md:min-w-[600px]">
+      <h1 class="text-lg text-center text-negative-400 font-bold">Deseja excluir item?</h1>
+      <hr class="mt-4 border-neutral-100">
+      <div class="flex w-full justify-center space-x-5 px-2.5 my-12">
+        <BaseButton type="button" class="md:w-40 bg-negative-300 text-white hover:text-white" outline
+          @click="deleteObject(objectToDelete)">Sim</BaseButton>
+        <BaseButton type="button" class="md:w-40" outline @click="modalDelete.close()">Não</BaseButton>
+      </div>
+    </div>
+  </BaseModal>
 </template>

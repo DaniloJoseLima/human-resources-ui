@@ -1,6 +1,6 @@
 <template>
   <button
-    class="flex items-center justify-center w-full h-14 font-bold rounded-md transition-colors duration-200 disabled:cursor-not-allowed"
+    class="flex items-center justify-center w-full h-14 font-bold rounded-md transition-colors duration-200 disabled:cursor-not-allowed hover:opacity-70"
     :class="getStyles()" :disabled="disabled" @click="onClick">
     <BaseIcons v-if="loading" name="spin" class="animate-spin w-6" />
     <template v-else>

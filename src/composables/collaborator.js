@@ -138,7 +138,7 @@ export function useRegistration() {
       return dayjs(value, 'DD/MM/YYYY').format('DD/MM/YYYY') === value
     }).nullable(),
     workingHours: yup.string().required('Campo obrigatório'),
-    comments: yup.string().min(6, 'Digite no mínimo 5 caracteres'),
+    comments: yup.string().min(6, 'Digite no mínimo 5 caracteres').nullable(),
   })
 
   const professionalDataForm = yup.object({
@@ -148,20 +148,36 @@ export function useRegistration() {
   const transportationVouchersForm = yup.object({
     typeTransportOneWay: yup.array().of(
       yup.object().shape({
-        type: yup.object().required('Campo obrigatório'),
+        transportTypes: yup.object().required('Campo obrigatório'),
         company: yup.string().required('Campo obrigatório'),
         line: yup.string().required('Campo obrigatório'),
         quantity: yup.string().required('Campo obrigatório'),
         value: yup.string().required('Campo obrigatório'),
+        transportCardType: yup.array().required('Campo obrigatório').test('validation', 'Campo obrigatório',
+          (value) => {
+            if (value.length > 0) {
+              return true
+            }
+            return false
+          }
+        ),
       })
     ).strict(),
     typeTransportReturn: yup.array().of(
       yup.object().shape({
-        type: yup.object().required('Campo obrigatório'),
+        transportTypes: yup.object().required('Campo obrigatório'),
         company: yup.string().required('Campo obrigatório'),
         line: yup.string().required('Campo obrigatório'),
         quantity: yup.string().required('Campo obrigatório'),
         value: yup.string().required('Campo obrigatório'),
+        transportCardType: yup.array().required('Campo obrigatório').test('validation', 'Campo obrigatório',
+          (value) => {
+            if (value.length > 0) {
+              return true
+            }
+            return false
+          }
+        ),
       })
     ).strict(),
   })

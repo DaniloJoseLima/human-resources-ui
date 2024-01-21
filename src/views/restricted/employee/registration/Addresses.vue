@@ -64,7 +64,6 @@ async function onSubmit(values) {
     await CollaboratorService.updateAddress(values.address).then((response) => {
       notify('SUCCESS', "Endereço Atualizado com sucesso!")
     }, (error) => {
-      debugger
       const msg = {
         'error': 'Erro ao atualizar informações.'
       }[error.response.data.message || 'Erro ao atualizar.']
@@ -80,8 +79,8 @@ async function onSubmit(values) {
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar informações.'
-      }[error.response.data.message || 'Erro ao salvar.']
-      notify('DANGER', msg)
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
     })
   }
 }

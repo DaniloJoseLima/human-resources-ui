@@ -70,8 +70,8 @@ async function onSubmit(values) {
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar alterações.'
-      }[error.response.data.message || 'Erro ao realizar alterações.']
-      notify('DANGER', msg)
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
     })
   } else {
     await CollaboratorService.save(collaborator).then((response) => {
@@ -80,8 +80,8 @@ async function onSubmit(values) {
     }, (error) => {
       const msg = {
         'error': 'Erro ao salvar informações.'
-      }[error.response.data.message || 'Erro ao salvar.']
-      notify('DANGER', msg)
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
     })
   }
 }

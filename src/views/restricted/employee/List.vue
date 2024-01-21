@@ -31,8 +31,8 @@ watch(
   { immediate: true }
 )
 
-function edite(id) {
-  router.push({ name: 'personal-data', query: { id } })
+function edite(id, contractType) {
+  router.push({ name: 'personal-data', query: { id, type: contractType } })
 }
 
 function onSearchSubmit({ field, q }) {
@@ -93,7 +93,7 @@ function onSearchSubmit({ field, q }) {
           <td class="border border-primary-100 p-2">{{ collaborator.contract.start ? formatDate(collaborator.contract.start) : 'Cadastro incompleto' }}</td>
           <td class="border border-primary-100 p-2"><a
               class="font-bold text-primary-500 cursor-pointer hover:opacity-70"
-              @click="edite(collaborator.id)">Editar</a></td>
+              @click="edite(collaborator.id, collaborator.contractType)">Editar</a></td>
         </tr>
       </tbody>
     </template>

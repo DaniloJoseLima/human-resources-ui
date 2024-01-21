@@ -1,3 +1,65 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { Form } from 'vee-validate'
+import { useRoute, useRouter } from 'vue-router'
+import useToastNotify from '@/hooks/toast'
+
+import BaseInput from '@/components/BaseInput.vue'
+import BaseButton from '@/components/BaseButton.vue'
+
+import { useRegistration } from '@/composables'
+import CollaboratorService from '../../../../services/collaborator.service'
+
+const {
+  companyDataForm
+} = useRegistration()
+
+const router = useRouter()
+const route = useRoute()
+const { notify } = useToastNotify()
+
+const collaboratorId = route.query.id
+
+let companyDataFormValues = ref({})
+
+onMounted(async () => {
+  if (collaboratorId) {
+    await loadData()
+  }
+})
+
+async function loadData() {
+  await CollaboratorService.findCompanyData(collaboratorId).then((response) => {
+    companyDataFormValues.value = response
+  })
+}
+
+async function onSubmit(values) {
+  values.collaboratorId = collaboratorId
+  values.id = companyDataFormValues.value && companyDataFormValues.value.id || null
+  if (!values.id) {
+    await CollaboratorService.saveCompanyData(values).then((response) => {
+      notify('SUCCESS', "Dados salvo com sucesso!")
+      router.push({ name: 'employee-list' });
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar informações.'
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
+    })
+  } else {
+    await CollaboratorService.updateCompanyData(values).then(async (response) => {
+      await loadData()
+      notify('SUCCESS', "Dados atualizados com sucesso!")
+    }, (error) => {
+      const msg = {
+        'error': 'Erro ao salvar informações.'
+      }[error.response.data.message]
+      notify('DANGER', msg || 'Erro ao salvar.')
+    })
+  }
+}
+</script>
 <template>
   <Form v-slot="{ isSubmitting }" @submit="onSubmit" :initial-values="companyDataFormValues"
     :validation-schema="companyDataForm" class="space-y-4">
@@ -23,25 +85,3 @@
     </div>
   </Form>
 </template>
-<script setup>
-import { ref } from 'vue'
-import { Form } from 'vee-validate'
-import { useRouter } from 'vue-router'
-
-import BaseInput from '@/components/BaseInput.vue'
-import BaseButton from '@/components/BaseButton.vue'
-
-import { useRegistration } from '@/composables'
-
-const router = useRouter()
-
-const {
-  companyDataForm
-} = useRegistration()
-
-let companyDataFormValues = ref({})
-
-async function onSubmit(values) {
-  router.push({ name: 'list' });
-}
-</script>

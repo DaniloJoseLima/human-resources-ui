@@ -107,15 +107,16 @@ function navigationMenu(path) {
       </p>
       <p class="text-sm text-primary-300">Vale Transporte</p>
     </li>
-    <li v-if="(registrationVerification && registrationVerification.contractType == 'pj') || collaboratorType == 'pj'"
+    <li v-if="collaboratorType == 'pj'"
       class="relative text-center m-auto w-full cursor-pointer hover:opacity-70"
       :class="{ 'cursor-default hover:opacity-100': !collaboratorId }" @click="navigationMenu('company')">
       <p class="flex items-center justify-center rounded-full text-sm text-white font-bold bg-primary-100 bg-opacity-60 w-8 h-8 m-auto"
         :class="{ 'bg-primary-500 bg-opacity-100': registrationVerification && registrationVerification.CompanyData == 1, 'bg-primary-400': route.name == 'company' && collaboratorId, 'bg-neutral-300': !collaboratorId }">
         10
-    </p>
-    <p class="text-sm text-primary-300">Dados da Empresa</p>
-  </li>
-</ol>
+      </p>
+      <p class="text-sm text-primary-300">Dados da Empresa</p>
+    </li>
+  </ol>
 
-<router-view></router-view></template>1
+  <router-view></router-view>
+</template>

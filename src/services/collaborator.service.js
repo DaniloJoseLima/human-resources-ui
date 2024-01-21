@@ -40,6 +40,11 @@ class CollaboratorService {
     return response.data;
   }
 
+  async deleteDocuments(id) {
+    const response = await api.delete(`/collaborator/documents/${id}`);
+    return response.data;
+  }
+
   async findDocuments(collaboratorId) {
     return api.get(`/collaborator/${collaboratorId}/documents`).then((response) => {
       return response.data;
@@ -53,6 +58,11 @@ class CollaboratorService {
 
   async updateContacts(values) {
     const response = await api.put("/collaborator/contacts", values);
+    return response.data;
+  }
+
+  async deleteContacts(id) {
+    const response = await api.delete(`/collaborator/contacts/${id}`);
     return response.data;
   }
 
@@ -88,6 +98,11 @@ class CollaboratorService {
     return response.data;
   }
 
+  async deleteDependents(id) {
+    const response = await api.delete(`/collaborator/dependents/${id}`);
+    return response.data;
+  }
+
   async findDependents(collaboratorId) {
     return api.get(`/collaborator/${collaboratorId}/dependents`).then((response) => {
       return response.data;
@@ -109,7 +124,7 @@ class CollaboratorService {
       return response.data;
     });
   }
-  
+
   async saveContractData(values) {
     const response = await api.post("/collaborator/contract-data", values);
     return response.data;
@@ -126,7 +141,6 @@ class CollaboratorService {
     });
   }
 
-  
   async saveProfessionalData(values) {
     const response = await api.post("/collaborator/professional-data", values);
     return response.data;
@@ -136,9 +150,56 @@ class CollaboratorService {
     const response = await api.put("/collaborator/professional-data", values);
     return response.data;
   }
+  
+  async deleteFormation(id) {
+    const response = await api.delete(`/collaborator/professional-data/formation/${id}`);
+    return response.data;
+  }
+  
+  async deleteCertification(id) {
+    const response = await api.delete(`/collaborator/professional-data/certification/${id}`);
+    return response.data;
+  }
 
   async findProfessionalData(collaboratorId) {
     return api.get(`/collaborator/${collaboratorId}/professional-data`).then((response) => {
+      return response.data;
+    });
+  }
+
+  async saveTransportationVouchers(values) {
+    const response = await api.post("/collaborator/transportation-vouchers", values);
+    return response.data;
+  }
+  
+  async updateTransportationVouchers(values) {
+    const response = await api.put("/collaborator/transportation-vouchers", values);
+    return response.data;
+  }
+  
+  async deleteTransportationVouchers(id) {
+    const response = await api.delete(`/collaborator/transportation-vouchers/${id}`);
+    return response.data;
+  }
+
+  async findTransportationVouchers(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/transportation-vouchers`).then((response) => {
+      return response.data;
+    });
+  }
+  
+  async saveCompanyData(values) {
+    const response = await api.post("/collaborator/company-data", values);
+    return response.data;
+  }
+  
+  async updateCompanyData(values) {
+    const response = await api.put("/collaborator/company-data", values);
+    return response.data;
+  }
+
+  async findCompanyData(collaboratorId) {
+    return api.get(`/collaborator/${collaboratorId}/company-data`).then((response) => {
       return response.data;
     });
   }
