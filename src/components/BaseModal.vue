@@ -19,7 +19,7 @@
       @after-leave="afterModalLeave"
     >
       <div v-if="showingModal" class="fixed inset-0 flex flex-col justify-center items-center z-40"  @click.self="close">
-          <div class="relative w-full md:w-auto bg-white rounded-[4px] h-screen md:h-auto overflow-auto py-4 border border-neutral-100">
+          <div class="relative w-11/12 md:w-auto bg-white rounded-[4px] h-auto overflow-auto py-4 border border-neutral-100">
             <button type="button" class="absolute p-2 top-3 right-4" @click.stop="close">
                 <BaseIcons name="close" class="w-4 h-4 text-neutral-200" />
             </button>

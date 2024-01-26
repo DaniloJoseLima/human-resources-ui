@@ -71,7 +71,7 @@ async function onSubmit(values) {
     :validation-schema="contractForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dados do Contrato</h2>
-      <div class="grid grid-cols-5 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <BaseInput name="remuneration" type="text" label="Salário"
           v-maska="['###,##', '#.###,##', '##.###,##', '###.###,##', '#.###.###,##']" />
         <BaseInput name="occupation" type="text" label="Função" />
@@ -84,7 +84,7 @@ async function onSubmit(values) {
         <BaseTextArea nameModel="comments" placeholder="Descreva aqui suas observações." />
       </div>
     </div>
-    <div class="flex justify-between">
+    <div class="space-y-4 md:space-y-0 md:flex justify-between">
       <router-link :to="{ name: 'employee-list' }">
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>

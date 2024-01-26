@@ -41,7 +41,7 @@ function onSearchSubmit({ field, q }) {
   <Form v-slot="{ resetForm }" class="relative flex-1 md:ml-14 md:mr-8 mt-8" :initial-values="searchFormValues"
     :validation-schema="searchFormValidation" @submit="onSearchSubmit">
     <div
-      class="py-2 px-6 rounded-full focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary-500 border border-primary-100">
+      class="py-2 px-6 rounded-full focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary-500 border border-primary-300">
       <div class="flex space-x-4">
         <Field v-slot="{ field }" name="field">
           <select v-bind="field" class="activities-search pr-6 text-neutral-500 focus-visible:outline-none">
@@ -65,21 +65,21 @@ function onSearchSubmit({ field, q }) {
     <ErrorMessage name="q" class="text-negative-300 text-sm" />
   </Form>
   <table class="table-auto w-full mt-4">
-    <thead class="text-lg text-left bg-primary-100">
+    <thead class="text-lg text-left bg-primary-300">
       <tr class="rounded-lg text-white">
-        <th class="border border-primary-200 p-2 min-w-[150px]">Nome</th>
-        <th class="border border-primary-200 p-2">E-mail</th>
-        <th class="border border-primary-200 p-2">Perfil</th>
-        <th class="border border-primary-200 p-2"></th>
+        <th class="border border-primary-300 p-2 min-w-[150px]">Nome</th>
+        <th class="hidden md:table-cell border border-primary-300 p-2">E-mail</th>
+        <th class="border border-primary-300 p-2">Perfil</th>
+        <th class="border border-primary-300 p-2"></th>
       </tr>
     </thead>
     <template v-if="data && data.list.length">
       <tbody class="border border-primary-500">
         <tr v-for="user of data.list" :key="user.id">
-          <td class="border border-primary-100 p-2">{{ user.name }}</td>
-          <td class="border border-primary-100 p-2">{{ user.email }}</td>
-          <td class="border border-primary-100 p-2">{{ user.roles.name }}</td>
-          <td class="border border-primary-100 p-2"><a class="font-bold text-primary-500 cursor-pointer hover:opacity-70"
+          <td class="border border-primary-300 p-2 truncate max-w-[150px] md:max-w-[250px]">{{ user.name }}</td>
+          <td class="hidden md:table-cell border border-primary-300 p-2">{{ user.email }}</td>
+          <td class="border border-primary-300 p-2 truncate max-w-[80px] md:max-w-[250px]">{{ user.roles.name }}</td>
+          <td class="border border-primary-300 p-2"><a class="font-bold text-primary-500 cursor-pointer hover:opacity-70"
               @click="edite(user.id)">Editar</a></td>
         </tr>
       </tbody>
@@ -95,21 +95,21 @@ function onSearchSubmit({ field, q }) {
     </template>
   </table>
   <div v-if="data && data.list.length"
-    class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-100">
+    class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-300">
     <p>Exibindo 1 - {{ data.pages }} de {{ data.totalRegisters }} registros</p>
     <div>
       <button v-if="currentPage > 1"
-        class="relative py-2 px-4 text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        class="relative py-2 px-4 text-sm font-normal border border-primary-500 hover:border-primary-300 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
         @click="setSearchParams({ page: currentPage - 1 })">
         &lt;
       </button>
       <button v-for="page of data.pages" :key="page"
-        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-300 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
         :class="{ 'text-white bg-primary-500': currentPage === page }" @click="setSearchParams({ page })">
         {{ page }}
       </button>
       <button v-if="currentPage < data.pages"
-        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 active:bg-neutral-400 transition-colors duration-200"
+        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-300 active:bg-neutral-400 transition-colors duration-200"
         @click="setSearchParams({ page: currentPage + 1 })">
         &gt;
       </button>

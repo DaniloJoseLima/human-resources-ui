@@ -90,21 +90,21 @@ async function onSubmit(values) {
     :validation-schema="addressesForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Endereço</h2>
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid md:grid-cols-4 gap-4">
         <BaseInput name="address.zipCode" type="text" v-maska="'#####-###'" label="CEP" @change="searchCep(values)"
           @focus="values.address = {}" />
       </div>
-      <div class="grid grid-cols-4 gap-4">
-        <BaseInput class="col-span-3" name="address.place" type="text" label="Logradouro" disabled />
-        <BaseInput class="col-span-1" name="address.number" type="text" label="Número" />
-        <BaseInput class="col-span-2" name="address.complement" type="text" label="Complemento" />
-        <BaseInput class="col-span-2" name="address.district" type="text" label="Bairro" disabled />
-        <BaseInput class="col-span-1" name="address.state" type="text" label="Estado" disabled />
-        <BaseInput class="col-span-1" name="address.city" type="text" label="Cidade" disabled />
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <BaseInput class="md:col-span-3" name="address.place" type="text" label="Logradouro" disabled />
+        <BaseInput class="md:col-span-1" name="address.number" type="text" label="Número" />
+        <BaseInput class="md:col-span-2" name="address.complement" type="text" label="Complemento" />
+        <BaseInput class="md:col-span-2" name="address.district" type="text" label="Bairro" disabled />
+        <BaseInput class="md:col-span-1" name="address.state" type="text" label="Estado" disabled />
+        <BaseInput class="md:col-span-1" name="address.city" type="text" label="Cidade" disabled />
 
       </div>
     </div>
-    <div class="flex justify-between">
+    <div class="space-y-4 md:space-y-0 md:flex justify-between">
       <router-link :to="{ name: 'employee-list' }">
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>

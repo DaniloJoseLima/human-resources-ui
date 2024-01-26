@@ -35,8 +35,10 @@ let maritalStatus = ref([]);
 let gender = ref([]);
 
 const CONTRACT_TYPE_LIST = ref([
-  {id: 1, name: 'PJ'},
-  {id: 2, name: 'CLT'},
+  {id: 'clt', name: 'CLT'},
+  {id: 'internship', name: 'Estágio'},
+  {id: 'cooperated', name: 'Cooperado'},
+  {id: 'pj', name: 'PJ'},
 ])
 
 onMounted(async () => {
@@ -59,8 +61,7 @@ async function onSubmit(values) {
     genderTypeId: values.gender.id,
     maritalStatusTypeId: values.gender.id,
     ethnicityTypeId: values.gender.id,
-    contractType: collaboratorType,
-    contractType: values.contractTypeObj.name.toLowerCase().trim()
+    contractType: values.contractTypeObj.id
   }
   
   if (collaboratorId) {
@@ -91,23 +92,23 @@ async function onSubmit(values) {
     :validation-schema="personalDataForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dados pessoais</h2>
-      <div class="grid grid-cols-4 gap-4">
-        <BaseInput class="col-span-3" name="name" type="text" label="Nome" />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <BaseInput class="md:col-span-3" name="name" type="text" label="Nome" />
         <BaseSelect nameModel="contractTypeObj" :listItens="CONTRACT_TYPE_LIST" label="Tipo de contrato" />
         <BaseInput name="birthDate" type="text" v-maska="'##/##/####'" label="Data de nascimento" />
-        <BaseInput class="col-span-2" name="email" type="text" label="E-mail" />
+        <BaseInput class="md:col-span-2" name="email" type="text" label="E-mail" />
         <BaseSelect nameModel="gender" :listItens="gender" label="Genero" />
         <BaseSelect nameModel="maritalStatus" :listItens="maritalStatus" label="Estado civil" />
         <BaseSelect nameModel="ethnicity" :listItens="ethnicity" label="Etnia" />
         <BaseInput name="nationality" type="text" label="Nacionalidade" />
         <BaseInput name="naturalness" type="text" label="Naturalidade" />
       </div>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <BaseInput name="motherName" type="text" label="Nome da mãe" />
         <BaseInput name="fatherName" type="text" label="Nome do pai" />
       </div>
     </div>
-    <div class="flex justify-between">
+    <div class="space-y-4 md:space-y-0 md:flex justify-between">
       <router-link :to="{ name: 'employee-list' }" >
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>

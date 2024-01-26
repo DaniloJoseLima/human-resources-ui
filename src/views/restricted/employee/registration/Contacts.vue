@@ -99,12 +99,12 @@ async function deleteObject(objectToDelete) {
       <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
         <h2 class="text-primary-500 text-lg font-bold">Contatos</h2>
         <FieldArray name="contacts" v-slot="{ fields, push, remove }">
-          <fieldset class="InputGroup" v-for="(field, idx) in fields" :key="field.key">
-            <div class="relative grid grid-cols-10 gap-4 pr-6">
+          <fieldset class="!mt-0 InputGroup" v-for="(field, idx) in fields" :key="field.key">
+            <div class="relative grid md:grid-cols-3 lg:grid-cols-10 gap-4 pr-6 py-6" :class="{ 'border-t border-dashed border-primary-100': idx > 0 }">
               <BaseSelect :nameModel="`contacts[${idx}].contactTypes`" :listItens="contactTypes" label="Tipo" />
-              <BaseInput class="col-span-3" :name="`contacts[${idx}].phoneNumber`" type="text" label="Número"
+              <BaseInput class="lg:col-span-3" :name="`contacts[${idx}].phoneNumber`" type="text" label="Número"
                 v-maska="['(##) ####-####', '(##) #####-####']" :value="field.value.phoneNumber" />
-              <button class="inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
+              <button class="absolute md:static right-0 top-6 inline text-left w-1 col-span-1 text-negative-400 font-bold hover:opacity-70" type="button"
                 @click="(!field.value.id ? remove(idx) : modalDelete.open({ objectToDelete: field.value }))"
                 v-if="fields.length > 1">X</button>
             </div>
@@ -113,7 +113,7 @@ async function deleteObject(objectToDelete) {
             @click="push({ collaboratorId: collaboratorId })">Adicionar novo contato</a>
         </FieldArray>
       </div>
-      <div class="flex justify-between">
+      <div class="space-y-4 md:space-y-0 md:flex justify-between">
         <router-link :to="{ name: 'employee-list' }">
           <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
         </router-link>

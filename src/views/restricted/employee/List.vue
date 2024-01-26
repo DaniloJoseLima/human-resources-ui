@@ -21,6 +21,14 @@ const {
 
 const { formatDate } = useUtils()
 const data = ref()
+
+const CONTRACT_TYPE_LIST = ref([
+  {id: 'clt', name: 'CLT'},
+  {id: 'internship', name: 'Estágio'},
+  {id: 'cooperated', name: 'Cooperado'},
+  {id: 'pj', name: 'PJ'},
+])
+
 let currentPage = computed(() => Number(route.query.page || 1))
 
 watch(
@@ -39,6 +47,10 @@ function onSearchSubmit({ field, q }) {
   setSearchParams({ field, q })
 }
 
+function contractType(id) {
+  const type = CONTRACT_TYPE_LIST.value.find(ct => ct.id == id)
+  return type ? type.name : null
+}
 </script>
 
 <template>
@@ -75,30 +87,30 @@ function onSearchSubmit({ field, q }) {
     <ErrorMessage name="q" class="text-negative-300 text-sm" />
   </Form>
   <table class="table-auto w-full mt-4">
-    <thead class="text-lg text-left bg-primary-100">
+    <thead class="text-lg text-left bg-primary-300">
       <tr class="rounded-lg text-white">
-        <th class="border border-primary-200 p-2 min-w-[150px]">Nome</th>
-        <th class="border border-primary-200 p-2">Contratação</th>
-        <th class="border border-primary-200 p-2">Departamento</th>
-        <th class="border border-primary-200 p-2">Data admissão</th>
-        <th class="border border-primary-200 p-2"></th>
+        <th class="border border-primary-300 p-2 min-w-[150px]">Nome</th>
+        <th class="border border-primary-300 p-2">Contratação</th>
+        <th class="hidden md:table-cell border border-primary-300 p-2">Departamento</th>
+        <th class="hidden md:table-cell border border-primary-300 p-2">Data admissão</th>
+        <th class="border border-primary-300 p-2"></th>
       </tr>
     </thead>
     <template v-if="data && data.list.length">
       <tbody class="border border-primary-500">
         <tr v-for="collaborator of data.list" :key="collaborator.id">
-          <td class="border border-primary-100 p-2">{{ collaborator.name }}</td>
-          <td class="border border-primary-100 p-2">{{ collaborator.contractType.toUpperCase() }}</td>
-          <td class="border border-primary-100 p-2">{{ collaborator.contract.occupation ? collaborator.contract.occupation : 'Cadastro incompleto' }}</td>
-          <td class="border border-primary-100 p-2">{{ collaborator.contract.start ? formatDate(collaborator.contract.start) : 'Cadastro incompleto' }}</td>
-          <td class="border border-primary-100 p-2"><a
+          <td class="border border-primary-300 p-2 truncate max-w-[150px] md:max-w-[250px]">{{ collaborator.name }}</td>
+          <td class="border border-primary-300 p-2">{{ contractType(collaborator.contractType) }}</td>
+          <td class="hidden md:table-cell border border-primary-300 p-2 truncate md:max-w-[150px]">{{ collaborator.contract.occupation ? collaborator.contract.occupation : 'Cadastro incompleto' }}</td>
+          <td class="hidden md:table-cell border border-primary-300 p-2 truncate max-w-[150px]">{{ collaborator.contract.start ? formatDate(collaborator.contract.start, 'DD/MM/YYYY') : 'Cadastro incompleto' }}</td>
+          <td class="border border-primary-300 p-2"><a
               class="font-bold text-primary-500 cursor-pointer hover:opacity-70"
               @click="edite(collaborator.id, collaborator.contractType)">Editar</a></td>
         </tr>
       </tbody>
     </template>
     <template v-else>
-      <tbody class="border border-primary-500">
+      <tbody class="border border-primary-300">
         <tr>
           <td colspan="4" class="text-center p-6">
             <h1 class="text-primary-500 font-bold text-2xl">Nenhum colaborador cadastrado</h1>
@@ -108,21 +120,21 @@ function onSearchSubmit({ field, q }) {
     </template>
   </table>
   <div v-if="data && data.list.length"
-    class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-100">
+    class="flex justify-between items-center p-4 text-sm md:text-base border-b border-l border-r border-primary-300">
     <p>Exibindo 1 - {{ data.pages }} de {{ data.totalRegisters }} registros</p>
     <div>
       <button v-if="currentPage > 1"
-        class="relative py-2 px-4 text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        class="relative py-2 px-4 text-sm font-normal border border-primary-300 hover:border-primary-300 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
         @click="setSearchParams({ page: currentPage - 1 })">
         &lt;
       </button>
       <button v-for="page of data.pages" :key="page"
-        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
-        :class="{ 'text-white bg-primary-500': currentPage === page }" @click="setSearchParams({ page })">
+        class="hidden md:inline-block relative py-2 px-4 -ml-px text-sm font-normal border border-primary-300 hover:border-primary-300 hover:z-10 active:bg-neutral-400 transition-colors duration-200"
+        :class="{ 'text-white bg-primary-300': currentPage === page }" @click="setSearchParams({ page })">
         {{ page }}
       </button>
       <button v-if="currentPage < data.pages"
-        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-500 hover:border-primary-100 active:bg-neutral-400 transition-colors duration-200"
+        class="relative py-2 px-4 -ml-px text-sm font-normal border border-primary-300 hover:border-primary-300 active:bg-neutral-400 transition-colors duration-200"
         @click="setSearchParams({ page: currentPage + 1 })">
         &gt;
       </button>

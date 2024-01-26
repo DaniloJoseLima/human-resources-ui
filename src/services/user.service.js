@@ -3,26 +3,26 @@ import qs from 'query-string'
 
 class UserService {
 
-  createUser(form) {
-    return api.post(`/user/create`, form).then(result => {
+  async createUser(form) {
+    return await api.post(`/user/create`, form).then(result => {
       return result.data
     });
   }
 
-  update(user) {
-    return api.put(`/user`, user).then(result => {
+  async update(user) {
+    return await api.put(`/user`, user).then(result => {
       return result.data
     });
   }
   
-  findAll(searchParams) {
-    return api.get(`/user?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((result) => {
+  async findAll(searchParams) {
+    return await api.get(`/user?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((result) => {
       return result.data;
     });
   }
   
-  find(id) {
-    return api.get(`/user/${id}`).then(result => {
+  async find(id) {
+    return await api.get(`/user/${id}`).then(result => {
       return result.data
     });
   }

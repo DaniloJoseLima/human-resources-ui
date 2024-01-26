@@ -203,6 +203,24 @@ class CollaboratorService {
       return response.data;
     });
   }
+  
+  async totalType() {
+    return api.get(`/collaborator/total/type`).then((response) => {
+      return response.data;
+    });
+  }
+  
+  async monthBirthdayList() {
+    return api.get("/collaborator/month/birthday").then((response) => {
+      return response.data;
+    });
+  }
+  
+  async companyBirthdayList() {
+    return api.get("/collaborator/month/company").then((response) => {
+      return response.data;
+    });
+  }
 }
 
 export default new CollaboratorService();

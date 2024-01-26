@@ -82,17 +82,17 @@ async function onSubmit(values) {
     class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dados Bancários</h2>
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <BaseInput name="name" type="text" label="Banco" />
         <BaseInput name="agency" type="text" label="Agência" v-maska="'#####'" />
         <BaseInput name="account" type="text" label="Conta" v-maska="'#######'" />
         <BaseSelect nameModel="accountType" :listItens="accountType" label="Tipo de conta" />
         <BaseSelect nameModel="accountCategory" :listItens="accountCategory" label="Categoria" />
         <BaseSelect nameModel="pixKeyType" :listItens="pixKeyType" label="Tipo de chave pix" />
-        <BaseInput class="col-span-2" name="pixKey" type="text" label="Chave Pix" />
+        <BaseInput class="md:col-span-2" name="pixKey" type="text" label="Chave Pix" />
       </div>
     </div>
-    <div class="flex justify-between">
+    <div class="space-y-4 md:space-y-0 md:flex justify-between">
       <router-link :to="{ name: 'employee-list' }">
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>

@@ -102,7 +102,7 @@ async function deleteObject(objectToDelete, type) {
     :validation-schema="professionalDataForm" class="space-y-4">
     <div class="space-y-4 border border-primary-100 rounded p-4 mt-2">
       <h2 class="text-primary-500 text-lg font-bold">Dados Profissionais</h2>
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid md:grid-cols-4 gap-4">
         <BaseSelect nameModel="schoolingTypes" :listItens="schoolingTypes" label="Nível de escolaridade" />
       </div>
       <div>
@@ -110,12 +110,12 @@ async function deleteObject(objectToDelete, type) {
           <fieldset class="!mt-0 InputGroup" v-for="(field, idx) in fields" :key="field.key">
             <div :class="{ 'border-t border-dashed border-primary-100': idx > 0 }">
               <p class="text-primary-500 font-medium mt-4 mb-2">Formação Acadêmica</p>
-              <div class="relative grid grid-cols-12 gap-4 pr-6 pb-6">
-                <BaseInput class="col-span-5" :name="`formation[${idx}].course`" type="text" label="Curso"
+              <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 pr-6 pb-6">
+                <BaseInput class="lg:col-span-5" :name="`formation[${idx}].course`" type="text" label="Curso"
                   :value="field.value.course" />
-                <BaseInput class="col-span-5" :name="`formation[${idx}].institution`" type="text" label="Instituição"
+                <BaseInput class="lg:col-span-5" :name="`formation[${idx}].institution`" type="text" label="Instituição"
                   :value="field.value.institution" />
-                <BaseInput class="col-span-2" :name="`formation[${idx}].period`" type="text" label="Período"
+                <BaseInput class="lg:col-span-2" :name="`formation[${idx}].period`" type="text" label="Período"
                   :value="field.value.period" />
                 <button class="absolute right-0 top-0 text-left w-1 text-negative-400 font-bold hover:opacity-70" type="button"
                   @click="(!field.value.id ? remove(idx) : modalDelete.open({ objectToDelete: field.value, type: 'formation' }))">X</button>
@@ -131,12 +131,12 @@ async function deleteObject(objectToDelete, type) {
           <fieldset class="!mt-0 InputGroup" v-for="(field, idx) in fields" :key="field.key">
             <div :class="{ 'border-t border-dashed border-primary-100': idx > 0 }">
               <p class="text-primary-500 font-medium mt-4 mb-2">Certificação</p>
-              <div class="relative grid grid-cols-12 gap-4 pr-6 pb-6">
-                <BaseInput class="col-span-5" :name="`certification[${idx}].name`" type="text" label="Nome"
+              <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 pr-6 pb-6">
+                <BaseInput class="lg:col-span-5" :name="`certification[${idx}].name`" type="text" label="Nome"
                   :value="field.value.name" />
-                <BaseInput class="col-span-2" :name="`certification[${idx}].number`" type="text" label="Número"
+                <BaseInput class="lg:col-span-2" :name="`certification[${idx}].number`" type="text" label="Número"
                   :value="field.value.number" />
-                <BaseInput class="col-span-5" :name="`certification[${idx}].institution`" type="text" label="Instituição"
+                <BaseInput class="lg:col-span-5" :name="`certification[${idx}].institution`" type="text" label="Instituição"
                   :value="field.value.institution" />
                 <button class="absolute right-0 top-0 text-left w-1 text-negative-400 font-bold hover:opacity-70" type="button"
                   @click="(!field.value.id ? remove(idx) : modalDelete.open({ objectToDelete: field.value, type: 'certification' }))">X</button>
@@ -148,7 +148,7 @@ async function deleteObject(objectToDelete, type) {
         </FieldArray>
       </div>
     </div>
-    <div class="flex justify-between">
+    <div class="space-y-4 md:space-y-0 md:flex justify-between">
       <router-link :to="{ name: 'employee-list' }">
         <BaseButton type="button" class="md:w-40 text-right m-auto mr-0" red>Voltar</BaseButton>
       </router-link>

@@ -3,26 +3,29 @@
     @submit="onSubmit">
     <main class="md:flex justify-center items-center h-screen bg-gradient-to-r from-neutral-100 to-neutral-200">
       <div
-        class="grid grid-cols-1 md:grid-cols-3 grid-flow-col gap-4 bg-primary-100 shadow-lg p-4 rounded-md md:w-2/3 h-screen md:h-auto">
+        class="grid grid-cols-1 lg:grid-cols-3 grid-flow-col gap-4 bg-primary-300 shadow-lg p-4 rounded-md md:w-2/3 h-screen md:h-auto">
         <div
-          class="col-start-1 col-end-12 md:col-span-1 flex flex-col items-center justify-center h-full md:border-r md:border-white px-2">
+          class="col-start-1 col-end-12 lg:col-span-1 flex flex-col items-center justify-center h-full lg:border-r md:border-white px-2">
           <h1 class="text-neutral-50 text-4xl font-bold text-center uppercase">Bem-vindo</h1>
-          <p class="text-neutral-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa accusantium quo
+          <!-- <p class="text-neutral-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa accusantium quo
             quidem, animi alias provident fugit excepturi vel doloribus asperiores rem itaque placeat sapiente ab, atque
-            omnis ducimus, obcaecati soluta?</p>
+            omnis ducimus, obcaecati soluta?</p> -->
         </div>
-        <div class="col-start-1 col-end-12 md:col-span-2 space-y-8">
+        <div class="col-start-1 col-end-12 lg:col-span-2 space-y-8">
           <div v-if="typeNavigation == 'login'" class="space-y-8">
-            <h1 class="text-4xl font-bold text-neutral-50 mb-4 text-center">Login</h1>
+            <h1 class="text-4xl font-bold text-neutral-50 mb-4 text-center uppercase">Login</h1>
             <div class="space-y-4">
               <BaseInput name="email" type="text" label="E-mail" />
               <BaseInput name="password" type="password" label="Senha" />
             </div>
-            <BaseButton type="submit" class="md:w-40 text-center m-auto" :disabled="isSubmitting">Entrar</BaseButton>
-            <div class="text-center">
-              <router-link :to="{ query: { navigation: 'register' } }">
-                <a class="text-positive-500 cursor-pointer hover:opacity-70">Cadastrar-se</a>
-              </router-link>
+            <div class="md:flex justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+              <BaseButton type="submit" class="md:w-40 text-center" :disabled="isSubmitting">Entrar</BaseButton>
+              <div>
+                <router-link :to="{ query: { navigation: 'register' } }">
+                  <BaseButton type="button" class="md:w-40 text-center border-neutral-50 text-neutral-50"
+                    :disabled="isSubmitting" outline>Cadastrar-se</BaseButton>
+                </router-link>
+              </div>
             </div>
           </div>
           <div v-if="typeNavigation == 'register'" class="space-y-8">
@@ -33,11 +36,14 @@
               <BaseInput name="password" type="password" label="Senha" />
               <BaseInput name="confirmPassword" type="password" label="Confirme sua senha" />
             </div>
-            <BaseButton type="submit" class="md:w-40 text-center m-auto" :disabled="isSubmitting">Cadastrar</BaseButton>
-            <div class="text-center">
-              <router-link :to="{ query: { navigation: 'login' } }">
-                <a class="text-positive-500 cursor-pointer hover:opacity-70">Voltar</a>
-              </router-link>
+            <div class="md:flex justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+              <BaseButton type="submit" class="md:w-40 text-center" :disabled="isSubmitting">Cadastrar</BaseButton>
+              <div>
+                <router-link :to="{ query: { navigation: 'login' } }">
+                  <BaseButton type="button" class="md:w-40 text-center border-neutral-50 text-neutral-50"
+                    :disabled="isSubmitting" outline>Voltar</BaseButton>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
