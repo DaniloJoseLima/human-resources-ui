@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center container h-[86px]">
       <div class="flex items-center justify-between md:justify-start w-full md:max-w-[140px]">
         <figure>
-          <img src="/public/images/company-logo.svg" alt="Logo" class="w-[124px] md:w-[100px] h-auto">
+          <img src="../assets/gallery/images/company-logo.svg" alt="Logo" class="w-[124px] md:w-[100px] h-auto">
         </figure>
         <!-- Hamburger Menu Icon -->
         <button @click="toggleMenu()" class="md:hidden ml-4 text-primary-600">
