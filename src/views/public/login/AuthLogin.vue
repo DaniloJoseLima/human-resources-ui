@@ -27,6 +27,9 @@
                 </router-link>
               </div>
             </div>
+            <div class="w-full text-center">
+              <GoogleLogin :callback="callback" prompt></GoogleLogin>
+            </div>
           </div>
           <div v-if="typeNavigation == 'register'" class="space-y-8">
             <h1 class="text-4xl font-bold text-neutral-50 mb-4 text-center">Cadastro</h1>
@@ -58,6 +61,7 @@ import { Form } from 'vee-validate'
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router'
 import useToastNotify from '@/hooks/toast'
+import { decodeCredential } from 'vue3-google-login'
 
 import { useLogin } from '@/composables'
 
@@ -78,6 +82,18 @@ const {
   registerForm
 } = useLogin()
 
+
+const callback = async (response) => {
+  const userData = decodeCredential(response.credential)
+  const user = { 
+    name: userData.name,
+    email: userData.email,
+    isGoogle: true
+  }
+
+  await login(user)
+}
+
 watch(
   () => route.query,
   async type => {
@@ -89,9 +105,8 @@ watch(
 )
 
 async function onSubmit(values) {
-
   if (typeNavigation.value == 'login') {
-    login(values)
+    await login(values)
   } else {
     userService.createUser(values).then(() => {
       notify('SUCESS', "Cadastro realizado com sucesso.")

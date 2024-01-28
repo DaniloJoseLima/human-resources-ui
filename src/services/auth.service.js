@@ -3,8 +3,8 @@ import TokenService from './token.service';
 
 class AuthService {
 
-  login({ email, password }) {
-    return api.post("/auth/login", { email, password }).then((response) => {
+  async login({ email, password, name, isGoogle }) {
+    return api.post("/auth/login", { email, password, name, isGoogle }).then((response) => {
        if (response.data.token) {
         TokenService.setCredentials(response.data);
       }
@@ -13,7 +13,7 @@ class AuthService {
   }
 
   //IMPLEMENTAR
-  logout(userId) {
+  async logout(userId) {
     return api.post("/auth/logout",{ userId }).then((response) => {
       TokenService.removeCredentials();
     });

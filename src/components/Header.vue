@@ -52,6 +52,10 @@
             </div>
           </PopoverPanel>
         </Popover>
+        <router-link :to="{ name: 'profile', params: { id: loggedInUser.id } }" class="font-bold text-primary-500 hover:text-primary-400"
+          active-class="font-bold">
+          Perfil
+        </router-link>
         <div>
           <a class="font-bold text-sm text-primary-600 underline cursor-pointer" @click="logout">Sair</a>
         </div>
@@ -99,6 +103,11 @@
               </div>
             </PopoverPanel>
           </Popover>
+          <router-link :to="{ name: 'profile', params: { id: loggedInUser.id } }"
+            class="flex items-center h-[86px] px-8 text-primary-500 border-b-2 border-white hover:border-primary-500 transition-colors duration-200"
+            active-class="border-primary-500">
+            Perfil
+          </router-link>
         </div>
       </div>
       <div class="hidden md:flex">
@@ -111,7 +120,7 @@
           <div class="hidden lg:flex items-center">
             <p class="font-normal text-primary-600">{{ loggedInUser?.name }}</p>
           </div>
-          <div class="flex items-center">
+          <div class="flex items-center space-x-4">
             <a class="font-bold text-sm text-primary-600 underline cursor-pointer" @click="logout">Sair</a>
           </div>
         </div>

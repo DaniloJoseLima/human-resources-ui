@@ -45,9 +45,9 @@ function getStyles() {
   }
 
   return {
-    outline: ['text-primary-300', 'border', 'border-primary-300', 'hover:text-primary-200', 'active:text-primary-100', 'hover:border-primary-200', 'active:border-primary-100', 'disabled:text-neutral-400', 'disabled:border-neutral-400'],
-    red: ['text-negative-300', 'border', 'border-negative-300', 'hover:text-negative-200', 'active:text-negative-100', 'hover:border-negative-200', 'active:border-negative-100', 'disabled:text-neutral-400', 'disabled:border-neutral-400'],
-    default: ['text-primary-600', 'bg-white', 'hover:bg-neutral-100', 'active:bg-neutral-200', 'disabled:text-neutral-300', 'disabled:bg-neutral-500']
+    outline: ['text-primary-300', 'border', 'border-primary-300', 'active:text-primary-100', 'hover:opacity-70', 'active:border-primary-100', 'disabled:text-neutral-400', 'disabled:border-neutral-400'],
+    red: ['text-negative-300', 'border', 'border-negative-300', 'active:text-negative-100', 'hover:opacity-70', 'active:border-negative-100', 'disabled:text-neutral-400', 'disabled:border-neutral-400'],
+    default: ['text-primary-600', 'bg-white', 'hover:opacity-70', 'active:bg-neutral-200', 'disabled:text-neutral-300', 'disabled:bg-neutral-500']
   }[style]
 }
 

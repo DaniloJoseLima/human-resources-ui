@@ -14,6 +14,12 @@ class UserService {
       return result.data
     });
   }
+
+  async updatePassoword(user) {
+    return await api.put(`/user/update-passoword`, user).then(result => {
+      return result.data
+    });
+  }
   
   async findAll(searchParams) {
     return await api.get(`/user?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((result) => {

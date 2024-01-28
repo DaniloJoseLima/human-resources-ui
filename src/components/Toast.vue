@@ -2,7 +2,7 @@
 <template>
 
   <div
-    class="fixed flex items-center justify-end max-w-xs p-4 bg-white border rounded-md shadow-sm z-50  mt-2 right-5 transition-opacity"
+    class="fixed flex items-center justify-end max-w-xs p-4 bg-white border rounded-md shadow-sm z-[999]  mt-2 right-5 transition-opacity"
     v-for="toast in toasts " :key="toast.id" :class="shadows[toast.type]">
     <div class="flex items-center">
       <template v-if="toast.type === 'SUCCESS'">

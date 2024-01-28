@@ -33,6 +33,7 @@ async function collaboratorCompanyBirthday() {
 
 </script>
 <template>
+  <h1 class="text-primary-500 text-xl font-bold uppercase mb-4">Dashboard</h1>
   <section v-if="totalEmployees" class="text-center">
     <div class="grid lg:grid-cols-4 gap-x-4 gap-y-6">
       <div class="col-span-2 sm:col-span-1 border border-neutral-100 rounded-md p-4 shadow-md">

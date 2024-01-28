@@ -5,6 +5,7 @@ import AuthLogin from '@/views/public/login/AuthLogin.vue'
 import Restricted from '@/views/restricted/Restricted.vue'
 import Dashboard from '@/views/restricted/dashboard/Dashboard.vue'
 import List from '@/views/restricted/employee/List.vue'
+import Profile from '@/views/restricted/profile/Profile.vue'
 
 import Registration from '@/views/restricted/employee/registration/Registration.vue'
 import PersonalData from '@/views/restricted/employee/registration/PersonalData.vue'
@@ -105,8 +106,7 @@ export const router = createRouter({
           path: '/employee-list',
           name: 'employee-list',
           component: List,
-        },
-        
+        },        
         {
           path: '/settings',
           name: 'settings',
@@ -123,6 +123,11 @@ export const router = createRouter({
               component: EditUsers,
             },
           ]
+        },
+        {
+          path: '/profile/:id',
+          name: 'profile',
+          component: Profile,
         },
       ]
     }

@@ -23,6 +23,7 @@
     "vee-validate": "^4.6.1",
     "vue": "^3.2.25",
     "vue-router": "^4.0.15",
+    "vue3-google-login": "^2.0.25",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
     "yup": "^0.32.11"
