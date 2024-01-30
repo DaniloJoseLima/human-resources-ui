@@ -17,6 +17,11 @@ class CollaboratorService {
       return response.data;
     });
   }
+  async listExportToExcel(searchParams) {
+    return api.get(`/collaborator/export-to-excel?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
+      return response.data;
+    });
+  }
 
   async find(id) {
     return api.get(`/collaborator/${id}`).then((response) => {
@@ -26,6 +31,12 @@ class CollaboratorService {
 
   async registrationVerification(id) {
     return api.get(`/collaborator/${id}/registration-verification`).then((response) => {
+      return response.data;
+    });
+  }
+  
+  async exportExel(values) {
+    return api.get(`/collaborator/export`).then((response) => {
       return response.data;
     });
   }

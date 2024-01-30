@@ -4,6 +4,7 @@ import { watch, ref, computed } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import CollaboratorService from '../../../services/collaborator.service';
 import { useRouter, useRoute } from 'vue-router'
+import * as ExcelJS from 'exceljs';
 
 import BaseButton from '@/components/BaseButton.vue'
 import BaseIcons from '@/components/BaseIcons.vue'
@@ -21,6 +22,7 @@ const {
 
 const { formatDate } = useUtils()
 const data = ref()
+let params = ref()
 
 const CONTRACT_TYPE_LIST = ref([
   {id: 'clt', name: 'CLT'},
@@ -35,9 +37,62 @@ watch(
   () => route.query,
   async searchParams => {
     data.value = await CollaboratorService.list(searchParams);
+    params.value = searchParams
   },
   { immediate: true }
 )
+
+async function exportToExcel() {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Colaboradores');
+
+  worksheet.columns = [
+    { header: 'Nome', key: 'name', width: 20 },
+    { header: 'Contratação', key: 'contractType', width: 20 },
+    { header: 'Departamento', key: 'department', width: 20 },
+    { header: 'Data admissão', key: 'admissionDate', width: 20 },
+  ];
+
+  const headerRow = worksheet.getRow(1);
+  headerRow.eachCell((cell) => {
+    cell.font = { bold: true, color: { argb: 'FFFFFF' } };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '009fb2' } };
+  });
+
+  
+  const list = await CollaboratorService.listExportToExcel(params.value);
+
+  list.forEach((item, index) => {
+    const collaborator = { 
+      name: item.name, 
+      contractType: contractType(item.contractType), 
+      department: item.contract.occupation ? item.contract.occupation : 'Cadastro incompleto' ,
+      admissionDate: item.contract.start ? formatDate(item.contract.start, 'DD/MM/YYYY') : 'Cadastro incompleto'
+    }
+    const row = worksheet.addRow(collaborator);
+    row.eachCell((cell) => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+  });
+
+  // Gere o arquivo Excel
+  workbook.xlsx.writeBuffer().then(buffer => {
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+
+    // Crie um link temporário e clique nele para iniciar o download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'lista-colaboradores.xlsx';
+    document.body.appendChild(link);
+    link.click();
+
+    // Libere os recursos
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  });
+};
 
 function edite(id, contractType) {
   router.push({ name: 'personal-data', query: { id, type: contractType } })
@@ -51,13 +106,18 @@ function contractType(id) {
   const type = CONTRACT_TYPE_LIST.value.find(ct => ct.id == id)
   return type ? type.name : null
 }
+
+async function exportExel(values) {
+  const excel = await CollaboratorService.exportExel(values);
+}
 </script>
 
 <template>
-  <section class="flex justify-end">
+  <section class="flex justify-end space-x-4">
     <router-link :to="{ name: 'personal-data' }">
       <BaseButton type="button" outline class="p-2">Cadastrar</BaseButton>
     </router-link>
+    <BaseButton type="button" outline class="p-2 w-28" @click="exportToExcel(null)">Exportar</BaseButton>
   </section>
   <Form v-slot="{ resetForm }" class="relative flex-1 md:ml-14 md:mr-8 mt-8" :initial-values="searchFormValues"
     :validation-schema="searchFormValidation" @submit="onSearchSubmit">
