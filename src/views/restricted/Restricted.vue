@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <div class="relative container min-h-[85vh] pt-32 mb-10">
+  <div class="relative container min-h-[90vh] pt-32 mb-10">
     <router-view></router-view>
 
   </div>

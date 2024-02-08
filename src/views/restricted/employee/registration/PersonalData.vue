@@ -47,9 +47,8 @@ onMounted(async () => {
   gender.value = await refDataService.getGenderTypes()
   if (collaboratorId) {
     const data = await CollaboratorService.find(collaboratorId)
-    const contractTypeId = data.contractType == 'pj' ? 1 : 2
     data.birthDate = data.birthDate ? dayjs(data.birthDate, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY') : undefined
-    data.contractTypeObj = CONTRACT_TYPE_LIST.value.find(c => c.id == contractTypeId)
+    data.contractTypeObj = CONTRACT_TYPE_LIST.value.find(c => c.id == data.contractType)
     collaboratorFormValues.value = data
   }
 })

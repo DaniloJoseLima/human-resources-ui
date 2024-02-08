@@ -62,12 +62,12 @@ async function exportToExcel() {
   
   const list = await CollaboratorService.listExportToExcel(params.value);
 
-  list.forEach((item, index) => {
+  list.forEach((item) => {
     const collaborator = { 
       name: item.name, 
       contractType: contractType(item.contractType), 
-      department: item.contract.occupation ? item.contract.occupation : 'Cadastro incompleto' ,
-      admissionDate: item.contract.start ? formatDate(item.contract.start, 'DD/MM/YYYY') : 'Cadastro incompleto'
+      department: item.contract.occupation ? item.contract.occupation : '' ,
+      admissionDate: item.contract.start ? formatDate(item.contract.start, 'DD/MM/YYYY') : ''
     }
     const row = worksheet.addRow(collaborator);
     row.eachCell((cell) => {
