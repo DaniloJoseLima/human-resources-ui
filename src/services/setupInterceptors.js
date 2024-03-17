@@ -3,8 +3,8 @@ import TokenService from "./token.service";
 
 
 const setup = (store) => {
-  axiosInstance.interceptors.request.use((config) => {
-    const token = TokenService.getLocalAccessToken();
+  axiosInstance.interceptors.request.use(async (config) => {
+    const token = await TokenService.getLocalAccessToken();
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}` ;
     }
