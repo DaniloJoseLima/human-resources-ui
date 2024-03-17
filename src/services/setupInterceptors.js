@@ -3,7 +3,6 @@ import TokenService from "./token.service";
 
 
 const setup = async (store) => {
-  debugger
   axiosInstance.interceptors.request.use(async (config) => {
     const token = await TokenService.getLocalAccessToken();
     if (token) {
