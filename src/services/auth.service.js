@@ -4,7 +4,7 @@ import TokenService from './token.service';
 class AuthService {
 
   async login({ email, password, name, isGoogle }) {
-    return api.post("/auth/login", { email, password, name, isGoogle }).then((response) => {
+    return await api.post("/auth/login", { email, password, name, isGoogle }).then((response) => {
        if (response.data.token) {
         TokenService.setCredentials(response.data);
       }
@@ -14,7 +14,7 @@ class AuthService {
 
   //IMPLEMENTAR
   async logout(userId) {
-    return api.post("/auth/logout",{ userId }).then((response) => {
+    return await api.post("/auth/logout",{ userId }).then((response) => {
       TokenService.removeCredentials();
     });
   }

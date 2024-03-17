@@ -4,7 +4,7 @@ class TokenService {
   
   getLocalRefreshToken() {
     const credentitals = JSON.parse(localStorage.getItem("credentitals"));
-    return credentitals?.refreshToken;
+    return credentitals?.token;
   }
 
   getLocalAccessToken() {

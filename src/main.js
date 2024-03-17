@@ -1,3 +1,4 @@
+// main.js
 import { createApp } from 'vue'
 import { router } from '@/router'
 import Maska from 'maska'
@@ -8,25 +9,28 @@ import vue3GoogleLogin from 'vue3-google-login'
 
 import 'virtual:svg-icons-register'
 
-setupInterceptors(store);
+async function initializeApp() {
+  await setupInterceptors(store); 
+  createApp(App)
+    .directive('focus', {
+      mounted(el) {
+        const input = el.querySelector('input')
 
-createApp(App)
-  .directive('focus', {
-    mounted(el) {
-      const input = el.querySelector('input')
+        if (input) {
+          input.focus()
+          return
+        }
 
-      if (input) {
-        input.focus()
-        return
+        el.focus()
       }
+    })
+    .use(store)
+    .use(router)
+    .use(Maska)
+    .use(vue3GoogleLogin, {
+      clientId: '845494712565-c0fqa24lil7sj8f8mut6rpp046hjm263.apps.googleusercontent.com'
+    })
+    .mount('#app')
+}
 
-      el.focus()
-    }
-  })
-  .use(store)
-  .use(router)
-  .use(Maska)
-  .use(vue3GoogleLogin, {
-    clientId: '845494712565-c0fqa24lil7sj8f8mut6rpp046hjm263.apps.googleusercontent.com'
-  })
-  .mount('#app')
+initializeApp();

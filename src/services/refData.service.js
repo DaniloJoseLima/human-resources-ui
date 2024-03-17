@@ -2,62 +2,62 @@ import api from './api';
 
 class RefDataService {
 
-  getEthnicityTypes() {
-    return api.get(`/ref-data/ethnicity-types`).then(result => {
+  async getEthnicityTypes() {
+    return await api.get(`/ref-data/ethnicity-types`).then(result => {
       return result.data
     });
   }
 
-  getMaritalStatusTypes() {
-    return api.get(`/ref-data/marital-status-types`).then(result => {
+  async getMaritalStatusTypes() {
+    return await api.get(`/ref-data/marital-status-types`).then(result => {
       return result.data
     });
   }
 
-  getGenderTypes() {
-    return api.get(`/ref-data/gender-types`).then(result => {
+  async getGenderTypes() {
+    return await api.get(`/ref-data/gender-types`).then(result => {
       return result.data
     });
   }
   
-  getDocumentsTypes() {
-    return api.get(`/ref-data/documents-types`).then(result => {
+  async getDocumentsTypes() {
+    return await api.get(`/ref-data/documents-types`).then(result => {
       return result.data
     });
   }
   
-  getSchoolingTypes() {
-    return api.get(`/ref-data/schooling-types`).then(result => {
+  async getSchoolingTypes() {
+    return await api.get(`/ref-data/schooling-types`).then(result => {
       return result.data
     });
   }
   
-  getContactTypes() {
-    return api.get(`/ref-data/contact-types`).then(result => {
+  async getContactTypes() {
+    return await api.get(`/ref-data/contact-types`).then(result => {
       return result.data
     });
   }
   
-  getDependentTypes() {
-    return api.get(`/ref-data/dependent-types`).then(result => {
+  async getDependentTypes() {
+    return await api.get(`/ref-data/dependent-types`).then(result => {
       return result.data
     });
   }
   
-  getTransportTypes() {
-    return api.get(`/ref-data/transport-types`).then(result => {
+  async getTransportTypes() {
+    return await api.get(`/ref-data/transport-types`).then(result => {
       return result.data
     });
   }
   
-  getTransportCardTypes() {
-    return api.get(`/ref-data/transport-card-types`).then(result => {
+  async getTransportCardTypes() {
+    return await api.get(`/ref-data/transport-card-types`).then(result => {
       return result.data
     });
   }
 
-  getRoles() {
-    return api.get(`/ref-data/roles`).then(result => {
+  async getRoles() {
+    return await api.get(`/ref-data/roles`).then(result => {
       return result.data
     });
   }

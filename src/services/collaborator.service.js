@@ -13,30 +13,30 @@ class CollaboratorService {
   }
 
   async list(searchParams) {
-    return api.get(`/collaborator?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
+    return await api.get(`/collaborator?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
       return response.data;
     });
   }
   async listExportToExcel(searchParams) {
-    return api.get(`/collaborator/export-to-excel?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
+    return await api.get(`/collaborator/export-to-excel?${qs.stringify({ page: 1, ...searchParams }, { skipEmptyString: true })}`).then((response) => {
       return response.data;
     });
   }
 
   async find(id) {
-    return api.get(`/collaborator/${id}`).then((response) => {
+    return await api.get(`/collaborator/${id}`).then((response) => {
       return response.data;
     });
   }
 
   async registrationVerification(id) {
-    return api.get(`/collaborator/${id}/registration-verification`).then((response) => {
+    return await api.get(`/collaborator/${id}/registration-verification`).then((response) => {
       return response.data;
     });
   }
   
   async exportExel(values) {
-    return api.get(`/collaborator/export`).then((response) => {
+    return await api.get(`/collaborator/export`).then((response) => {
       return response.data;
     });
   }
@@ -57,7 +57,7 @@ class CollaboratorService {
   }
 
   async findDocuments(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/documents`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/documents`).then((response) => {
       return response.data;
     });
   }
@@ -78,7 +78,7 @@ class CollaboratorService {
   }
 
   async findContacts(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/contacts`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/contacts`).then((response) => {
       return response.data;
     });
   }
@@ -94,7 +94,7 @@ class CollaboratorService {
   }
 
   async findAddress(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/address`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/address`).then((response) => {
       return response.data;
     });
   }
@@ -115,7 +115,7 @@ class CollaboratorService {
   }
 
   async findDependents(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/dependents`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/dependents`).then((response) => {
       return response.data;
     });
   }
@@ -131,7 +131,7 @@ class CollaboratorService {
   }
 
   async findBankData(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/bank-data`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/bank-data`).then((response) => {
       return response.data;
     });
   }
@@ -147,7 +147,7 @@ class CollaboratorService {
   }
 
   async findContractData(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/contract-data`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/contract-data`).then((response) => {
       return response.data;
     });
   }
@@ -173,7 +173,7 @@ class CollaboratorService {
   }
 
   async findProfessionalData(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/professional-data`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/professional-data`).then((response) => {
       return response.data;
     });
   }
@@ -194,7 +194,7 @@ class CollaboratorService {
   }
 
   async findTransportationVouchers(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/transportation-vouchers`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/transportation-vouchers`).then((response) => {
       return response.data;
     });
   }
@@ -210,25 +210,25 @@ class CollaboratorService {
   }
 
   async findCompanyData(collaboratorId) {
-    return api.get(`/collaborator/${collaboratorId}/company-data`).then((response) => {
+    return await api.get(`/collaborator/${collaboratorId}/company-data`).then((response) => {
       return response.data;
     });
   }
   
   async totalType() {
-    return api.get(`/collaborator/total/type`).then((response) => {
+    return await api.get(`/collaborator/total/type`).then((response) => {
       return response.data;
     });
   }
   
   async monthBirthdayList() {
-    return api.get("/collaborator/month/birthday").then((response) => {
+    return await api.get("/collaborator/month/birthday").then((response) => {
       return response.data;
     });
   }
   
   async companyBirthdayList() {
-    return api.get("/collaborator/month/company").then((response) => {
+    return await api.get("/collaborator/month/company").then((response) => {
       return response.data;
     });
   }

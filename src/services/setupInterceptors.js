@@ -2,11 +2,12 @@ import axiosInstance from "./api";
 import TokenService from "./token.service";
 
 
-const setup = (store) => {
+const setup = async (store) => {
+  debugger
   axiosInstance.interceptors.request.use(async (config) => {
     const token = await TokenService.getLocalAccessToken();
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}` ;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   });
@@ -15,12 +16,13 @@ const setup = (store) => {
     (response) => {
       return response;
     },
-    async (error) => { 
+    async (error) => {
       const originalConfig = error.config;
       if (originalConfig.url !== "/login" && error.response) {
-        if (error.response.status === 401 && !originalConfig._retry) {         
+        if (error.response.status === 401 && !originalConfig._retry) {
+          originalConfig._retry = true;          
           store.dispatch('auth/logout')
-          window.location = '#/'             
+          window.location = '#/'
           return Promise.reject(error);
         }
       }
