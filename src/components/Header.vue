@@ -16,7 +16,7 @@
       <div v-if="isMenuOpen"
         class="md:hidden fixed top-[88px] right-0 bg-white bg-opacity-70 backdrop-filter backdrop-blur w-full h-full z-50 text-center space-y-4 pt-4 transition duration-200">
         <router-link v-if="verifyPermission('MENU_DASHBOARD', loggedInUser)" :to="{ name: 'dashboard' }"
-          class="block text-primary-600 hover:bg-neutral-100 text-lg font-bold"
+          class="block text-primary-600 text-lg font-bold"
           @click="closeMenus()">Dashboard</router-link>
         <Popover v-slot="{ open }" class="relative">
           <PopoverButton v-if="verifyPermission('MENU_COLLABORATORS', loggedInUser)">
@@ -52,7 +52,7 @@
             </div>
           </PopoverPanel>
         </Popover>
-        <router-link :to="{ name: 'profile', params: { id: loggedInUser.id } }" class="font-bold text-primary-500 hover:text-primary-400"
+        <router-link :to="{ name: 'profile', params: { id: loggedInUser.id } }" class="block text-primary-600 text-lg font-bold"
           active-class="font-bold">
           Perfil
         </router-link>

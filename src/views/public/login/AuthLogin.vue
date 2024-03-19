@@ -115,7 +115,7 @@ async function onSubmit(values) {
       async (error) => {
         const msg = {
           'Email already exists': 'E-mail já cadastrado na base'
-        }[error.response.data.message || 'Erro ao realizar cadastro']
+        }[error.response && error.response.data && error.response.data.message || 'Erro ao realizar cadastro']
         notify('DANGER', msg)
       }
     )
@@ -131,7 +131,7 @@ async function login(values) {
       const msg = {
         'account not exist': 'Usuário não encontrado',
         'invalid password': 'Senha inválida',
-      }[error.response.data.message || 'Erro ao realizar login']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao realizar login']
       notify('DANGER', msg)
     }
   );

@@ -66,7 +66,7 @@ async function onSubmit(values) {
     }, (error) => {
       const msg = {
         'error': 'Erro ao atualizar informações.'
-      }[error.response.data.message || 'Erro ao atualizar.']
+      }[error.response && error.response.data && error.response.data.message || 'Erro ao atualizar.']
       notify('DANGER', msg)
     })
   } else {

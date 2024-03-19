@@ -116,7 +116,7 @@ async function deleteObject(objectToDelete) {
   }, (error) => {
     const msg = {
       'error': 'Erro ao deletar documento.'
-    }[error.response.data.message || 'Erro ao deletar.']
+    }[error.response && error.response.data && error.response.data.message || 'Erro ao deletar.']
     notify('DANGER', msg)
   })
   modalDelete.value.close()
