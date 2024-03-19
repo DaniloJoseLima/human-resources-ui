@@ -109,7 +109,7 @@ async function onSubmit(values) {
     await login(values)
   } else {
     userService.createUser(values).then(() => {
-      notify('SUCESS', "Cadastro realizado com sucesso.")
+      notify('SUCCESS', "Cadastro realizado com sucesso.")
       login(values)
     },
       async (error) => {
