@@ -1,0 +1,40 @@
+{
+  "name": "human-resources-ui",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build:dev": "vite build --mode dev",
+    "build:homolog": "vite build --mode homolog",
+    "build:prod": "vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.2",
+    "@heroicons/react": "^2.0.11",
+    "@heroicons/vue": "^2.0.11",
+    "@vueuse/core": "^10.7.2",
+    "autoprefixer": "^10.4.7",
+    "axios": "^0.27.2",
+    "cpf-cnpj-validator": "^1.0.3",
+    "dayjs": "^1.11.7",
+    "exceljs": "^4.4.0",
+    "jwt-decode": "^3.1.2",
+    "maska": "^1.5.0",
+    "query-string": "^8.1.0",
+    "secure-ls": "^1.2.6",
+    "vee-validate": "^4.6.1",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.15",
+    "vue3-google-login": "^2.0.25",
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.4",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.9",
+    "vite-plugin-svg-icons": "^1.1.0"
+  }
+}
